@@ -1,2 +1,1 @@
-# personaldoc.github.io
- 
+# mahallenizin süer kahramanı
