@@ -1,1 +1,1 @@
-# mahallenizin süer kahramanı
+# mahallenizin süper kahramanı
