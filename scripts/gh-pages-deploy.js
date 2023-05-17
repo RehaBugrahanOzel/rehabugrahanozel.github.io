@@ -12,7 +12,7 @@ const fs = require("fs");
     console.log("Pushing to gh-pages...");
     await execa("git", ["push", "origin", "HEAD:gh-pages", "--force"]);
     console.log("Pushed to gh-pages.");
-    await execa("rm", ["-r", "dist"]);
+    await execa("rm -r dist");
     console.log("1");
     await execa("git", ["checkout", "-f", "main"]);
     console.log("2");
