@@ -7,14 +7,17 @@ const fs = require("fs");
     console.log("Building...");
     await execa("npm", ["run", "build"]);
     // Understand if it's dist or build folder
-    const folderName = fs.existsSync("dist") ? "dist" : "build";
-    await execa("git", ["--work-tree", folderName, "add", "--all"]);
-    await execa("git", ["--work-tree", folderName, "commit", "-m", "Deploy"]);
+    await execa("git", ["--work-tree", "dist", "add", "--all"]);
+    await execa("git", ["--work-tree", "dist", "commit", "-m", "Deploy"]);
     console.log("Pushing to gh-pages...");
     await execa("git", ["push", "origin", "HEAD:gh-pages", "--force"]);
-    await execa("rm", ["-r", folderName]);
+    console.log("Pushed to gh-pages.");
+    await execa("rm", ["-r", "dist"]);
+    console.log("1");
     await execa("git", ["checkout", "-f", "main"]);
+    console.log("2");
     await execa("git", ["branch", "-D", "gh-pages"]);
+    console.log("gh-pages branch deleted.");
     console.log("Successfully deployed");
   } catch (e) {
     console.log(e.message);
