@@ -3,5 +3,5 @@ module.exports = defineConfig({
   transpileDependencies: true,
 });
 module.exports = {
-  publicPath: "/name-of-your-project/",
+  publicPath: "/rehabugrahanozel.github.io/",
 };
