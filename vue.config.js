@@ -3,14 +3,5 @@ module.exports = defineConfig({
   transpileDependencies: true,
 });
 module.exports = {
-  publicPath:
-    process.env.NODE_ENV === "production"
-      ? "/rehabugrahanozel.github.io/"
-      : "/",
-};
-module.exports = {
-  baseUrl:
-    process.env.NODE_ENV === "production"
-      ? "/rehabugrahanozel.github.io/"
-      : "/",
+  publicPath: "/rehabugrahanozel.github.io/",
 };
