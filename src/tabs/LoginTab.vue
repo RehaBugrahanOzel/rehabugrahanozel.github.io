@@ -62,6 +62,7 @@ export default {
       this.$emit("loginClosed", false);
     },
     login() {
+      console.log("login pressed");
       router.push("/home");
     },
 
