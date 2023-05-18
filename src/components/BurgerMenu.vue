@@ -10,9 +10,9 @@
         </label>
 
         <nav class="menu1">
-          <a class="link1" href="">Profile</a>
-          <a class="link1" href="">Settings</a>
-          <a class="link1" href="" style="color: #f15b40">Logout</a>
+          <a class="link1" @click="goProfile">Profile</a>
+          <a class="link1" @click="goSettings">Settings</a>
+          <a class="link1" style="color: #f15b40" @click="logout">Logout</a>
         </nav>
       </nav>
     </section>
@@ -20,7 +20,21 @@
 </template>
 
 <script>
-export default {};
+import router from "@/router/router";
+export default {
+  name: "BurgerMenu",
+  methods: {
+    goProfile() {
+      router.push("/profile");
+    },
+    goSettings() {
+      router.push("/settings");
+    },
+    logout() {
+      router.push("/");
+    },
+  },
+};
 </script>
 
 <style scoped>
