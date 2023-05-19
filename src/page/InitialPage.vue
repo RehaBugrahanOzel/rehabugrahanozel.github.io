@@ -104,6 +104,7 @@ export default {
     loginClosed(state) {
       gsap.to(".login", {
         duration: 1,
+        ease: "power4.out",
         y: window.innerHeight,
       });
       setTimeout(() => {
@@ -113,6 +114,7 @@ export default {
     registerClosed(state) {
       gsap.to(".register", {
         duration: 1,
+        ease: "power4.out",
         y: window.innerHeight,
       });
       setTimeout(() => {
@@ -131,30 +133,35 @@ export default {
     enterFirstCart(el) {
       gsap.to(el, {
         duration: 1,
+        ease: "power4.out",
         y: 0,
       });
     },
     enterSecondCart(el) {
       gsap.to(el, {
         duration: 1.5,
+        ease: "power4.out",
         y: 0,
       });
     },
     enterTab(el) {
       gsap.to(el, {
         duration: 1,
+        ease: "power4.out",
         y: 0,
       });
     },
     enterImg(el) {
       gsap.to(el, {
         duration: 1.5,
+        ease: "power4.out",
         y: 0,
       });
     },
     enterTitle(el) {
       gsap.to(el, {
         duration: 1,
+        ease: "power4.out",
         y: 0,
       });
     },

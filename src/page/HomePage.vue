@@ -123,6 +123,7 @@ export default {
       this.isPageShown = state;
       gsap.to(".exercise", {
         duration: 1,
+        ease: "power4.out",
         y: window.innerHeight,
       });
       setTimeout(() => {
@@ -140,6 +141,7 @@ export default {
       this.isExerciseActive = true;
       gsap.to("#reha-transition", {
         duration: 1,
+        ease: "power4.out",
         y: window.innerHeight,
       });
       setTimeout(() => {
@@ -152,6 +154,7 @@ export default {
     enterTab(el) {
       gsap.to(el, {
         duration: 1.1,
+        ease: "power4.out",
         y: 0,
       });
     },
