@@ -2,38 +2,76 @@
   <div>
     <div class="initial">
       <div class="title-section">
-        <img src="../assets/img/logo.svg" alt="logo" class="logo" />
-        <div class="title">PostureFix</div>
+        <transition
+          appear
+          @before-enter="beforeEnterTitleSection"
+          @enter="enterImg"
+        >
+          <img src="../assets/img/logo.svg" alt="logo" class="logo" />
+        </transition>
+        <transition
+          appear
+          @before-enter="beforeEnterTitleSection"
+          @enter="enterTitle"
+        >
+          <div class="title">PostureFix</div>
+        </transition>
       </div>
-      <div class="first-cart">
-        <CommonButton
-          text="Login"
-          class="button"
-          wrapper="dark"
-          @click="login"
-        />
-      </div>
-      <div class="second-cart">
-        <CommonButton
-          text="Register"
-          class="button"
-          wrapper="light"
-          @click="register"
-        />
-      </div>
+      <transition
+        appear
+        @before-enter="beforeEnterCart"
+        @enter="enterFirstCart"
+      >
+        <div class="first-cart">
+          <CommonButton
+            text="Login"
+            class="button"
+            wrapper="dark"
+            @click="login"
+          />
+        </div>
+      </transition>
+      <transition
+        appear
+        @before-enter="beforeEnterCart"
+        @enter="enterSecondCart"
+      >
+        <div class="second-cart">
+          <CommonButton
+            text="Register"
+            class="button"
+            wrapper="light"
+            @click="register"
+          />
+        </div>
+      </transition>
     </div>
-    <LoginTab
-      class="login-tab"
-      v-if="isLoginActive"
-      :isLoginActive="isLoginActive"
-      @loginClosed="loginClosed"
-    />
-    <RegisterTab
-      class="register-tab"
-      v-if="isRegisterActive"
-      :isRegisterActive="isRegisterActive"
-      @registerClosed="registerClosed"
-    />
+    <transition
+      appear
+      @before-enter="beforeEnterTab"
+      @enter="enterTab"
+      id="login-transition"
+    >
+      <LoginTab
+        class="login-tab"
+        v-if="isLoginActive"
+        :isLoginActive="isLoginActive"
+        @loginClosed="loginClosed"
+      />
+    </transition>
+    <transition
+      appear
+      @before-enter="beforeEnterTab"
+      @enter="enterTab"
+      id="register-transition"
+    >
+      <RegisterTab
+        class="register-tab"
+        v-if="isRegisterActive"
+        :isRegisterActive="isRegisterActive"
+        @registerClosed="registerClosed"
+      />
+    </transition>
   </div>
 </template>
 
@@ -42,6 +80,7 @@ import CommonButton from "../components/CommonButton.vue";
 import LoginTab from "../tabs/LoginTab.vue";
 import RegisterTab from "../tabs/RegisterTab.vue";
 import "../assets/css/style.css";
+import { gsap } from "gsap";
 export default {
   name: "InitialPage",
   components: {
@@ -63,10 +102,61 @@ export default {
       this.isRegisterActive = true;
     },
     loginClosed(state) {
-      this.isLoginActive = state;
+      gsap.to(".login", {
+        duration: 1,
+        y: window.innerHeight,
+      });
+      setTimeout(() => {
+        this.isLoginActive = state;
+      }, 1000);
     },
     registerClosed(state) {
-      this.isRegisterActive = state;
+      gsap.to(".register", {
+        duration: 1,
+        y: window.innerHeight,
+      });
+      setTimeout(() => {
+        this.isRegisterActive = state;
+      }, 1000);
+    },
+    beforeEnterCart(el) {
+      el.style.transform = "translateY(100%)";
+    },
+    beforeEnterTab(el) {
+      el.style.transform = "translateY(100%)";
+    },
+    beforeEnterTitleSection(el) {
+      el.style.transform = "translateY(-340px)";
+    },
+    enterFirstCart(el) {
+      gsap.to(el, {
+        duration: 1,
+        y: 0,
+      });
+    },
+    enterSecondCart(el) {
+      gsap.to(el, {
+        duration: 1.5,
+        y: 0,
+      });
+    },
+    enterTab(el) {
+      gsap.to(el, {
+        duration: 1,
+        y: 0,
+      });
+    },
+    enterImg(el) {
+      gsap.to(el, {
+        duration: 1.5,
+        y: 0,
+      });
+    },
+    enterTitle(el) {
+      gsap.to(el, {
+        duration: 1,
+        y: 0,
+      });
     },
   },
   created() {
@@ -135,9 +225,6 @@ export default {
 }
 .first-cart {
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
   height: 46%;
   max-height: 406px;
   width: 100%;
@@ -155,8 +242,6 @@ export default {
 }
 .second-cart {
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
   height: 30%;
   max-height: 287px;
   width: 100%;

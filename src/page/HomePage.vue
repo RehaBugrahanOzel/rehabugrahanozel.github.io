@@ -5,7 +5,7 @@
         <!--<img src="../assets/img/hamburger-icon.svg" class="element" />-->
         <BurgerMenu></BurgerMenu>
       </div>
-      <div class="page" v-if="!isExerciseActive">
+      <div class="page" v-if="!isPageShown">
         <div class="page-image">
           <ExerciseButton
             class="exercise-button"
@@ -25,22 +25,36 @@
         </div>
       </div>
     </div>
-    <ExerciseTab
-      class="exercise-tab"
-      v-if="isExerciseActive"
-      :categoryName="selectedExercise"
-      :isExerciseActive="isExerciseActive"
-      @exerciseClosed="exerciseClosed"
-      @exerciseChoosed="exerciseChoosed"
+    <transition
+      appear
+      @before-enter="beforeEnterTab"
+      @enter="enterTab"
+      id="exercise-transition"
     >
-    </ExerciseTab>
-    <VideoExerciseTab
-      class="video-exercise-tab"
-      v-if="videoExerciseActive"
-      :videoExerciseInfo="videoExerciseInfo"
-      :videoExerciseActive="videoExerciseActive"
-      @videoExerciseClosed="videoExerciseClosed"
-    ></VideoExerciseTab>
+      <ExerciseTab
+        class="exercise-tab"
+        v-if="isExerciseActive"
+        :categoryName="selectedExercise"
+        :isExerciseActive="isExerciseActive"
+        @exerciseClosed="exerciseClosed"
+        @exerciseChoosed="exerciseChoosed"
+      >
+      </ExerciseTab>
+    </transition>
+    <transition
+      appear
+      @before-enter="beforeEnterTab"
+      @enter="enterTab"
+      id="reha-transition"
+    >
+      <VideoExerciseTab
+        class="video-exercise-tab"
+        v-if="videoExerciseActive"
+        :videoExerciseInfo="videoExerciseInfo"
+        :videoExerciseActive="videoExerciseActive"
+        @videoExerciseClosed="videoExerciseClosed"
+      ></VideoExerciseTab>
+    </transition>
   </div>
 </template>
 
@@ -58,6 +72,7 @@ import Chest from "../assets/img/body-parts/chest.svg";
 import FullBody from "../assets/img/body-parts/full-body.svg";
 import Leg from "../assets/img/body-parts/leg.svg";
 import "../assets/css/style.css";
+import { gsap } from "gsap";
 
 export default {
   name: "HomePage",
@@ -82,6 +97,7 @@ export default {
       ],
 
       isExerciseActive: false,
+      isPageShown: false,
       selectedExercise: "",
       videoExerciseActive: false,
       videoExerciseInfo: {},
@@ -96,21 +112,48 @@ export default {
 
   methods: {
     exerciseSelected(item) {
-      this.isExerciseActive = true;
       this.selectedExercise = item;
+      this.isExerciseActive = true;
+      setTimeout(() => {
+        this.isPageShown = true;
+      }, 1000);
     },
 
     exerciseClosed(state) {
-      this.isExerciseActive = state;
+      this.isPageShown = state;
+      gsap.to(".exercise", {
+        duration: 1,
+        y: window.innerHeight,
+      });
+      setTimeout(() => {
+        this.isExerciseActive = state;
+      }, 1000);
     },
     exerciseChoosed(state, item) {
       this.videoExerciseActive = state;
       this.videoExerciseInfo = item;
-      this.isExerciseActive = false;
+      // setTimeout(() => {
+      //   this.isExerciseActive = false;
+      // }, 1000);
     },
     videoExerciseClosed(state) {
-      this.videoExerciseActive = state;
       this.isExerciseActive = true;
+      gsap.to("#reha-transition", {
+        duration: 1,
+        y: window.innerHeight,
+      });
+      setTimeout(() => {
+        this.videoExerciseActive = state;
+      }, 1000);
+    },
+    beforeEnterTab(el) {
+      el.style.transform = "translateY(100%)";
+    },
+    enterTab(el) {
+      gsap.to(el, {
+        duration: 1.1,
+        y: 0,
+      });
     },
   },
 };

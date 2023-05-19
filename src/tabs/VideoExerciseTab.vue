@@ -100,6 +100,7 @@ export default {
   position: absolute;
   left: 0;
   margin: 9px 0 0 23px;
+  transform: rotate(-0.25turn);
 }
 
 .logo-mini {

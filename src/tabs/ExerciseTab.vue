@@ -90,6 +90,7 @@ export default {
   position: absolute;
   left: 0;
   margin: 54px 0 0 12px;
+  transform: rotate(-0.25turn);
 }
 
 .text {
