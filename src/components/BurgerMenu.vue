@@ -26,12 +26,15 @@ export default {
   methods: {
     goProfile() {
       router.push("/profile");
+      document.getElementById("toggle1").checked = false;
     },
     goSettings() {
       router.push("/settings");
+      document.getElementById("toggle1").checked = false;
     },
     logout() {
       router.push("/");
+      document.getElementById("toggle1").checked = false;
     },
   },
 };

@@ -16,15 +16,34 @@
 
       <!---->
       <div style="display: flex; flex-direction: row">
-        <OtpInput
-          ref="otpInput"
-          input-classes="otp-input"
-          separator="-"
-          :num-inputs="4"
-          :should-auto-focus="true"
-          :is-input-num="true"
-          @on-change="handleOnChange"
-          @on-complete="handleOnComplete"
+        <input
+          type="text"
+          class="otp-input"
+          maxlength="1"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'');
+        document.getElementById('num2').focus();"
+          id="num1"
+        />
+        <input
+          type="text"
+          class="otp-input"
+          maxlength="1"
+          oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('num3').focus();"
+          id="num2"
+        />
+        <input
+          type="text"
+          class="otp-input"
+          maxlength="1"
+          oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('num4').focus();"
+          id="num3"
+        />
+        <input
+          type="text"
+          class="otp-input"
+          maxlength="1"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+          id="num4"
         />
       </div>
 
@@ -55,39 +74,39 @@
 <script>
 import CommonButton from "@/components/CommonButton.vue";
 import router from "@/router/router";
-import OtpInput from "vue3-otp-input";
 
 export default {
   name: "VerificationPage",
 
   components: {
     CommonButton,
-    OtpInput,
   },
 
   data() {
-    return {
-      OtpInput,
-    };
+    return {};
   },
 
   methods: {
     goBack() {
       router.push("/forgotPassword");
     },
-
     verify() {
+      var num1 = document.getElementById("num1").value;
+      var num2 = document.getElementById("num2").value;
+      var num3 = document.getElementById("num3").value;
+      var num4 = document.getElementById("num4").value;
+      var otpCode = num1 + num2 + num3 + num4;
+      console.log("otp code is: ", otpCode);
       router.push("/createNewPassword");
     },
     resend() {},
-
-    handleOnComplete(value) {
-      console.log("OTP completed: ", value);
+    focusInputFirst() {
+      document.getElementById("num1").focus();
     },
-
-    handleOnChange(value) {
-      console.log("OTP changed: ", value);
-    },
+  },
+  mounted() {
+    this.focusInputFirst();
+    console.log(document.querySelector("num2"));
   },
 };
 </script>
@@ -181,21 +200,12 @@ export default {
   left: 50%;
   transform: translate(-50%, 0);
 }
-
 .otp-input {
   width: 40px;
   height: 40px;
-  padding: 5px;
-  margin: 0 10px;
-  font-size: 20px;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  margin: 0 5px;
   text-align: center;
-}
-
-.otp-input::-webkit-inner-spin-button,
-.otp-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+  font-size: 20px;
 }
 </style>
