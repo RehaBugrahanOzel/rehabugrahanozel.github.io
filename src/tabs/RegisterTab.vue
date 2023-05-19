@@ -46,7 +46,6 @@ import CommonIconButton from "../components/CommonIconButton.vue";
 import FacebookIcon from "../assets/img/facebook-icon.svg";
 import GoogleIcon from "../assets/img/google-icon-light.svg";
 import AppleIcon from "../assets/img/apple-icon-light.svg";
-import router from "@/router/router";
 export default {
   name: "RegisterTab",
   props: {
@@ -62,7 +61,7 @@ export default {
       this.$emit("registerClosed", false);
     },
     register() {
-      router.push("/home");
+      this.$emit("registeredIn");
     },
   },
   data() {

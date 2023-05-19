@@ -1,61 +1,67 @@
 <template>
-  <div class="initial">
-    <div v-if="!videoExerciseActive">
-      <div class="burger-button">
-        <!--<img src="../assets/img/hamburger-icon.svg" class="element" />-->
-        <BurgerMenu></BurgerMenu>
-      </div>
-      <div class="page" v-if="!isPageShown">
-        <div class="page-image">
-          <ExerciseButton
-            class="exercise-button"
-            :src="exerciseOfTheDayImg"
-            :text="exerciseOfTheDayTxt"
-          ></ExerciseButton>
+  <transition appear @before-enter="beforeEnter" @enter="enter">
+    <div class="initial">
+      <div v-if="!videoExerciseActive">
+        <div class="burger-button">
+          <!--<img src="../assets/img/hamburger-icon.svg" class="element" />-->
+          <BurgerMenu></BurgerMenu>
         </div>
-        <div class="container-wrapper">
-          <div class="flex-container" v-for="item in exercisesList" :key="item">
-            <CategoryButton
-              class="category-button"
-              :text="item.txt"
-              :src="item.img"
-              @click="exerciseSelected(item.txt)"
-            ></CategoryButton>
+        <div class="page" v-if="!isPageShown">
+          <div class="page-image">
+            <ExerciseButton
+              class="exercise-button"
+              :src="exerciseOfTheDayImg"
+              :text="exerciseOfTheDayTxt"
+            ></ExerciseButton>
+          </div>
+          <div class="container-wrapper">
+            <div
+              class="flex-container"
+              v-for="item in exercisesList"
+              :key="item"
+            >
+              <CategoryButton
+                class="category-button"
+                :text="item.txt"
+                :src="item.img"
+                @click="exerciseSelected(item.txt)"
+              ></CategoryButton>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <transition
-      appear
-      @before-enter="beforeEnterTab"
-      @enter="enterTab"
-      id="exercise-transition"
-    >
-      <ExerciseTab
-        class="exercise-tab"
-        v-if="isExerciseActive"
-        :categoryName="selectedExercise"
-        :isExerciseActive="isExerciseActive"
-        @exerciseClosed="exerciseClosed"
-        @exerciseChoosed="exerciseChoosed"
+      <transition
+        appear
+        @before-enter="beforeEnterTab"
+        @enter="enterTab"
+        id="exercise-transition"
       >
-      </ExerciseTab>
-    </transition>
-    <transition
-      appear
-      @before-enter="beforeEnterTab"
-      @enter="enterTab"
-      id="reha-transition"
-    >
-      <VideoExerciseTab
-        class="video-exercise-tab"
-        v-if="videoExerciseActive"
-        :videoExerciseInfo="videoExerciseInfo"
-        :videoExerciseActive="videoExerciseActive"
-        @videoExerciseClosed="videoExerciseClosed"
-      ></VideoExerciseTab>
-    </transition>
-  </div>
+        <ExerciseTab
+          class="exercise-tab"
+          v-if="isExerciseActive"
+          :categoryName="selectedExercise"
+          :isExerciseActive="isExerciseActive"
+          @exerciseClosed="exerciseClosed"
+          @exerciseChoosed="exerciseChoosed"
+        >
+        </ExerciseTab>
+      </transition>
+      <transition
+        appear
+        @before-enter="beforeEnterTab"
+        @enter="enterTab"
+        id="reha-transition"
+      >
+        <VideoExerciseTab
+          class="video-exercise-tab"
+          v-if="videoExerciseActive"
+          :videoExerciseInfo="videoExerciseInfo"
+          :videoExerciseActive="videoExerciseActive"
+          @videoExerciseClosed="videoExerciseClosed"
+        ></VideoExerciseTab>
+      </transition>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -156,6 +162,16 @@ export default {
         duration: 1.1,
         ease: "power4.out",
         y: 0,
+      });
+    },
+    beforeEnter(el) {
+      el.style.transform = "translateX(100%)";
+    },
+    enter(el) {
+      gsap.to(el, {
+        duration: 1,
+        ease: "power4.out",
+        x: 0,
       });
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="initial">
+    <div class="initial" id="initial-page">
       <div class="title-section">
         <transition
           appear
@@ -57,6 +57,7 @@
         v-if="isLoginActive"
         :isLoginActive="isLoginActive"
         @loginClosed="loginClosed"
+        @loggedIn="loggedIn"
       />
     </transition>
     <transition
@@ -70,6 +71,7 @@
         v-if="isRegisterActive"
         :isRegisterActive="isRegisterActive"
         @registerClosed="registerClosed"
+        @registeredIn="registeredIn"
       />
     </transition>
   </div>
@@ -81,6 +83,7 @@ import LoginTab from "../tabs/LoginTab.vue";
 import RegisterTab from "../tabs/RegisterTab.vue";
 import "../assets/css/style.css";
 import { gsap } from "gsap";
+import router from "@/router/router";
 export default {
   name: "InitialPage",
   components: {
@@ -97,6 +100,42 @@ export default {
   methods: {
     login() {
       this.isLoginActive = true;
+    },
+    loggedIn() {
+      gsap.to(".login", {
+        duration: 1,
+        ease: "power4.out",
+        y: window.innerHeight,
+      });
+      setTimeout(() => {
+        this.isLoginActive = false;
+        gsap.to(".initial", {
+          duration: 1,
+          ease: "power4.out",
+          x: -window.innerHeight,
+        });
+        setTimeout(() => {
+          router.push("/home");
+        }, 1000);
+      }, 1000);
+    },
+    registeredIn() {
+      gsap.to(".register", {
+        duration: 1,
+        ease: "power4.out",
+        y: window.innerHeight,
+      });
+      setTimeout(() => {
+        this.isLoginActive = false;
+        gsap.to(".initial", {
+          duration: 1,
+          ease: "power4.out",
+          x: -window.innerHeight,
+        });
+        setTimeout(() => {
+          router.push("/home");
+        }, 1000);
+      }, 1000);
     },
     register() {
       this.isRegisterActive = true;

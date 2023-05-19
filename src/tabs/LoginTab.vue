@@ -63,7 +63,7 @@ export default {
     },
     login() {
       console.log("login pressed");
-      router.push("/home");
+      this.$emit("loggedIn");
     },
 
     forgotPassword() {
