@@ -1,29 +1,16 @@
 <template>
   <div class="color">
-    <div class="forgotPassword">
-      <div class="header">
-        <img
-          src="../assets/img/back-button.svg"
-          alt="back-button"
-          class="back-button"
-          @click="goBack"
-        />
-      </div>
-      <div class="text">Forgot Password?</div>
-      <div class="sub-text">
-        Don't worry! It occurs. Please enter the email address linked with your
-        account.
-      </div>
+    <div class="page">
+      <img class="image" src="../assets/img/password-changed.svg" />
 
-      <div class="input-section">
-        <CommonInput class="element" text="Enter your email" inputType="text" />
-      </div>
+      <div class="text">Password Changed!</div>
+      <div class="sub-text">Your password has been changed successfully.</div>
 
       <CommonButton
-        text="Send Code"
+        text="Back to Login"
         class="button"
         wrapper="dark"
-        @click="sendCode"
+        @click="goLogin"
       />
 
       <div class="footer">
@@ -32,11 +19,6 @@
           alt="logo-mini"
           class="logo-mini"
         />
-
-        <div class="footer-text">
-          Remember Password?
-          <a @click="goBack" style="color: #35c2c1">Home</a>
-        </div>
       </div>
     </div>
   </div>
@@ -44,22 +26,16 @@
 
 <script>
 import CommonButton from "@/components/CommonButton.vue";
-import CommonInput from "@/components/CommonInput.vue";
 import router from "@/router/router";
 export default {
-  name: "ForgotPassword",
+  name: "PasswordChanged",
 
   components: {
-    CommonInput,
     CommonButton,
   },
 
   methods: {
-    sendCode() {
-      router.push("/verification");
-    },
-
-    goBack() {
+    goLogin() {
       router.push("/");
     },
   },
@@ -81,40 +57,14 @@ export default {
   bottom: 0px;
   left: 0px;
 }
-.forgotPassword {
+
+.page {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 7px;
   font-family: "Arial";
 }
-.input-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  flex-direction: column;
-}
-.input-section .element {
-  margin-top: 15px;
-}
-
-.header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.back-button {
-  width: 41px;
-  height: 41px;
-  position: absolute;
-  left: 20px;
-  margin: 9px 0 0 23px;
-  top: 71px;
-}
-
 .text {
   font-weight: normal;
   font-size: 30px;
@@ -122,7 +72,7 @@ export default {
   line-height: 100%;
   font-family: "Arial";
   font-weight: 700;
-  margin: 145px 0px 10px 0px;
+  margin: 40px 0px 10px 0px;
 }
 
 .button {
@@ -134,21 +84,13 @@ export default {
 
 .sub-text {
   font-size: 16px;
-  margin-top: 30px;
+  margin-top: 20px;
   position: relative;
   max-width: 500px;
   margin-left: 20px;
   margin-bottom: 57px;
   font-weight: 500;
   color: #8391a1;
-}
-
-.footer-text {
-  font-size: 14px;
-  margin-top: 26px;
-  bottom: 30px;
-  display: flex;
-  justify-content: center;
 }
 
 .logo-mini {
@@ -165,5 +107,9 @@ export default {
   bottom: 30px;
   left: 50%;
   transform: translate(-50%, 0);
+}
+
+.image {
+  margin-top: 150px;
 }
 </style>

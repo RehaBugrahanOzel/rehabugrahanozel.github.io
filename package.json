@@ -16,6 +16,7 @@
     "video.js": "^8.0.4",
     "vue": "^3.2.13",
     "vue-router": "^4.1.6",
+    "vue3-otp-input": "^0.4.1",
     "yargs": "^3.9.0"
   },
   "devDependencies": {

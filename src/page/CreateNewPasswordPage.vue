@@ -1,6 +1,6 @@
 <template>
   <div class="color">
-    <div class="forgotPassword">
+    <div class="create-password">
       <div class="header">
         <img
           src="../assets/img/back-button.svg"
@@ -9,21 +9,27 @@
           @click="goBack"
         />
       </div>
-      <div class="text">Forgot Password?</div>
+      <div class="text">Create new password</div>
       <div class="sub-text">
-        Don't worry! It occurs. Please enter the email address linked with your
-        account.
+        Your new password must be unique from those previously used.
       </div>
 
       <div class="input-section">
-        <CommonInput class="element" text="Enter your email" inputType="text" />
+        <CommonInput class="element" text="New Password" inputType="password" />
+      </div>
+      <div class="input-section">
+        <CommonInput
+          class="element"
+          text="Confirm Password"
+          inputType="password"
+        />
       </div>
 
       <CommonButton
-        text="Send Code"
+        text="Reset Password"
         class="button"
         wrapper="dark"
-        @click="sendCode"
+        @click="resetPassword"
       />
 
       <div class="footer">
@@ -32,11 +38,6 @@
           alt="logo-mini"
           class="logo-mini"
         />
-
-        <div class="footer-text">
-          Remember Password?
-          <a @click="goBack" style="color: #35c2c1">Home</a>
-        </div>
       </div>
     </div>
   </div>
@@ -47,7 +48,7 @@ import CommonButton from "@/components/CommonButton.vue";
 import CommonInput from "@/components/CommonInput.vue";
 import router from "@/router/router";
 export default {
-  name: "ForgotPassword",
+  name: "CreateNewPassword",
 
   components: {
     CommonInput,
@@ -55,12 +56,12 @@ export default {
   },
 
   methods: {
-    sendCode() {
-      router.push("/verification");
+    resetPassword() {
+      router.push("/passwordChanged");
     },
 
     goBack() {
-      router.push("/");
+      router.push("/verification");
     },
   },
 };
@@ -81,7 +82,7 @@ export default {
   bottom: 0px;
   left: 0px;
 }
-.forgotPassword {
+.create-password {
   display: flex;
   flex-direction: column;
   align-items: center;
