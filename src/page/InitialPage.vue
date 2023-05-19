@@ -117,7 +117,7 @@ export default {
         setTimeout(() => {
           router.push("/home");
         }, 1000);
-      }, 1000);
+      }, 500);
     },
     registeredIn() {
       gsap.to(".register", {
