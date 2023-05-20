@@ -2,42 +2,95 @@
   <div class="color">
     <div class="create-password">
       <div class="header">
-        <img
-          src="../assets/img/back-button.svg"
-          alt="back-button"
-          class="back-button"
-          @click="goBack"
-        />
+        <transition
+          appear
+          @before-enter="beforeEnterTop"
+          @enter="enterTop"
+          id="eod"
+        >
+          <img
+            src="../assets/img/back-button.svg"
+            alt="back-button"
+            class="back-button"
+            @click="goBack"
+          />
+        </transition>
       </div>
-      <div class="text">Create new password</div>
-      <div class="sub-text">
-        Your new password must be unique from those previously used.
-      </div>
+      <transition
+        appear
+        @before-enter="beforeEnterTop"
+        @enter="enterTop"
+        id="eod"
+      >
+        <div class="text">Create new password</div>
+      </transition>
+      <transition
+        appear
+        @before-enter="beforeEnterTop"
+        @enter="enterTop"
+        id="eod"
+      >
+        <div class="sub-text">
+          Your new password must be unique from those previously used.
+        </div>
+      </transition>
 
       <div class="input-section">
-        <CommonInput class="element" text="New Password" inputType="password" />
+        <transition
+          appear
+          @before-enter="beforeEnterBot"
+          @enter="enterTop"
+          id="eod"
+        >
+          <CommonInput
+            class="element"
+            text="New Password"
+            inputType="password"
+          />
+        </transition>
       </div>
       <div class="input-section">
-        <CommonInput
-          class="element"
-          text="Confirm Password"
-          inputType="password"
-        />
+        <transition
+          appear
+          @before-enter="beforeEnterBot"
+          @enter="enterTop"
+          id="eod"
+        >
+          <CommonInput
+            class="element"
+            text="Confirm Password"
+            inputType="password"
+          />
+        </transition>
       </div>
 
-      <CommonButton
-        text="Reset Password"
-        class="button"
-        wrapper="dark"
-        @click="resetPassword"
-      />
+      <transition
+        appear
+        @before-enter="beforeEnterBot"
+        @enter="enterTop"
+        id="eod"
+      >
+        <CommonButton
+          text="Reset Password"
+          class="button"
+          wrapper="dark"
+          @click="resetPassword"
+        />
+      </transition>
 
       <div class="footer">
-        <img
-          src="../assets/img/logo-mini.svg"
-          alt="logo-mini"
-          class="logo-mini"
-        />
+        <transition
+          appear
+          @before-enter="beforeEnterBot"
+          @enter="enterTop"
+          id="eod"
+        >
+          <img
+            src="../assets/img/logo-mini.svg"
+            alt="logo-mini"
+            class="logo-mini"
+          />
+        </transition>
       </div>
     </div>
   </div>
@@ -47,6 +100,7 @@
 import CommonButton from "@/components/CommonButton.vue";
 import CommonInput from "@/components/CommonInput.vue";
 import router from "@/router/router";
+import { gsap } from "gsap";
 export default {
   name: "CreateNewPassword",
 
@@ -62,6 +116,26 @@ export default {
 
     goBack() {
       router.push("/verification");
+    },
+    beforeEnterTop(el) {
+      el.style.transform = "translateY(-1000%)";
+    },
+    enterTop(el) {
+      gsap.to(el, {
+        duration: 1,
+        ease: "power4.out",
+        y: 0,
+      });
+    },
+    beforeEnterBot(el) {
+      el.style.transform = "translateY(1000%)";
+    },
+    enterBot(el) {
+      gsap.from(el, {
+        duration: 1,
+        ease: "power4.out",
+        y: 0,
+      });
     },
   },
 };

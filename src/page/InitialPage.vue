@@ -78,9 +78,14 @@
 </template>
 
 <script>
-import CommonButton from "../components/CommonButton.vue";
-import LoginTab from "../tabs/LoginTab.vue";
-import RegisterTab from "../tabs/RegisterTab.vue";
+import { defineAsyncComponent } from "vue";
+const CommonButton = defineAsyncComponent(() =>
+  import("../components/CommonButton.vue")
+);
+const LoginTab = defineAsyncComponent(() => import("../tabs/LoginTab.vue"));
+const RegisterTab = defineAsyncComponent(() =>
+  import("../tabs/RegisterTab.vue")
+);
 import "../assets/css/style.css";
 import { gsap } from "gsap";
 import router from "@/router/router";
@@ -102,40 +107,12 @@ export default {
       this.isLoginActive = true;
     },
     loggedIn() {
-      gsap.to(".login", {
-        duration: 1,
-        ease: "power4.out",
-        y: window.innerHeight,
-      });
-      setTimeout(() => {
-        this.isLoginActive = false;
-        gsap.to(".initial", {
-          duration: 1,
-          ease: "power4.out",
-          x: -window.innerHeight,
-        });
-        setTimeout(() => {
-          router.push("/home");
-        }, 1000);
-      }, 500);
+      this.isLoginActive = false;
+      router.push("/home");
     },
     registeredIn() {
-      gsap.to(".register", {
-        duration: 1,
-        ease: "power4.out",
-        y: window.innerHeight,
-      });
-      setTimeout(() => {
-        this.isLoginActive = false;
-        gsap.to(".initial", {
-          duration: 1,
-          ease: "power4.out",
-          x: -window.innerHeight,
-        });
-        setTimeout(() => {
-          router.push("/home");
-        }, 1000);
-      }, 1000);
+      this.isLoginActive = false;
+      router.push("/home");
     },
     register() {
       this.isRegisterActive = true;

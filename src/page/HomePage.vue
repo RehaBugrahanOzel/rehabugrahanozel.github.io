@@ -1,19 +1,37 @@
 <template>
-  <transition appear @before-enter="beforeEnter" @enter="enter">
-    <div class="initial">
-      <div v-if="!videoExerciseActive">
-        <div class="burger-button">
-          <!--<img src="../assets/img/hamburger-icon.svg" class="element" />-->
+  <div class="initial">
+    <div>
+      <div class="burger-button" v-if="!videoExerciseActive">
+        <!--<img src="../assets/img/hamburger-icon.svg" class="element" />-->
+        <transition
+          appear
+          @before-enter="beforeEnterBurger"
+          @enter="enterBurger"
+        >
           <BurgerMenu></BurgerMenu>
-        </div>
-        <div class="page" v-if="!isPageShown">
-          <div class="page-image">
+        </transition>
+      </div>
+      <div class="page" v-if="!isPageShown">
+        <div class="page-image">
+          <transition
+            appear
+            @before-enter="beforeEnterTop"
+            @enter="enterTop"
+            id="eod"
+          >
             <ExerciseButton
               class="exercise-button"
               :src="exerciseOfTheDayImg"
               :text="exerciseOfTheDayTxt"
             ></ExerciseButton>
-          </div>
+          </transition>
+        </div>
+        <transition
+          appear
+          @before-enter="beforeEnterBottom"
+          @enter="enterBottom"
+          id="bottom-container"
+        >
           <div class="container-wrapper">
             <div
               class="flex-container"
@@ -28,48 +46,59 @@
               ></CategoryButton>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
-      <transition
-        appear
-        @before-enter="beforeEnterTab"
-        @enter="enterTab"
-        id="exercise-transition"
-      >
-        <ExerciseTab
-          class="exercise-tab"
-          v-if="isExerciseActive"
-          :categoryName="selectedExercise"
-          :isExerciseActive="isExerciseActive"
-          @exerciseClosed="exerciseClosed"
-          @exerciseChoosed="exerciseChoosed"
-        >
-        </ExerciseTab>
-      </transition>
-      <transition
-        appear
-        @before-enter="beforeEnterTab"
-        @enter="enterTab"
-        id="reha-transition"
-      >
-        <VideoExerciseTab
-          class="video-exercise-tab"
-          v-if="videoExerciseActive"
-          :videoExerciseInfo="videoExerciseInfo"
-          :videoExerciseActive="videoExerciseActive"
-          @videoExerciseClosed="videoExerciseClosed"
-        ></VideoExerciseTab>
-      </transition>
     </div>
-  </transition>
+    <transition
+      appear
+      @before-enter="beforeEnterTab"
+      @enter="enterTab"
+      id="exercise-transition"
+    >
+      <ExerciseTab
+        class="exercise-tab"
+        v-if="isExerciseActive"
+        :categoryName="selectedExercise"
+        :isExerciseActive="isExerciseActive"
+        @exerciseClosed="exerciseClosed"
+        @exerciseChoosed="exerciseChoosed"
+      >
+      </ExerciseTab>
+    </transition>
+    <transition
+      appear
+      @before-enter="beforeEnterTab"
+      @enter="enterTab"
+      id="reha-transition"
+    >
+      <VideoExerciseTab
+        class="video-exercise-tab"
+        v-if="videoExerciseActive"
+        :videoExerciseInfo="videoExerciseInfo"
+        :videoExerciseActive="videoExerciseActive"
+        @videoExerciseClosed="videoExerciseClosed"
+      ></VideoExerciseTab>
+    </transition>
+  </div>
 </template>
 
 <script>
-import BurgerMenu from "@/components/BurgerMenu.vue";
-import CategoryButton from "../components/CategoryButton.vue";
-import ExerciseTab from "@/tabs/ExerciseTab.vue";
-import VideoExerciseTab from "@/tabs/VideoExerciseTab.vue";
-import ExerciseButton from "@/components/ExerciseButton.vue";
+import { defineAsyncComponent } from "vue";
+const BurgerMenu = defineAsyncComponent(() =>
+  import("@/components/BurgerMenu.vue")
+);
+const CategoryButton = defineAsyncComponent(() =>
+  import("../components/CategoryButton.vue")
+);
+const ExerciseTab = defineAsyncComponent(() =>
+  import("@/tabs/ExerciseTab.vue")
+);
+const VideoExerciseTab = defineAsyncComponent(() =>
+  import("@/tabs/VideoExerciseTab.vue")
+);
+const ExerciseButton = defineAsyncComponent(() =>
+  import("@/components/ExerciseButton.vue")
+);
 import ExerciseOfTheDay from "../assets/img/exercise-of-the-day.svg";
 import Core from "../assets/img/body-parts/core.svg";
 import Arm from "../assets/img/body-parts/arm.svg";
@@ -120,14 +149,26 @@ export default {
     exerciseSelected(item) {
       this.selectedExercise = item;
       this.isExerciseActive = true;
-      setTimeout(() => {
-        this.isPageShown = true;
-      }, 1000);
+      gsap.to("#eod", {
+        duration: 1,
+        ease: "power4.out",
+        y: -300,
+      });
     },
 
     exerciseClosed(state) {
       this.isPageShown = state;
       gsap.to(".exercise", {
+        duration: 1,
+        ease: "power4.out",
+        y: window.innerHeight,
+      });
+      gsap.to("#eod", {
+        duration: 1,
+        ease: "power4.out",
+        y: 0,
+      });
+      gsap.from("#bottom-container", {
         duration: 1,
         ease: "power4.out",
         y: window.innerHeight,
@@ -164,14 +205,33 @@ export default {
         y: 0,
       });
     },
-    beforeEnter(el) {
-      el.style.transform = "translateX(100%)";
+    beforeEnterBurger(el) {
+      el.style.transform = "translateY(-200px)";
     },
-    enter(el) {
+    enterBurger(el) {
       gsap.to(el, {
         duration: 1,
         ease: "power4.out",
-        x: 0,
+        y: 0,
+      });
+    },
+    beforeEnterTop(el) {
+      el.style.transform = "translateY(-100%)";
+    },
+    enterTop(el) {
+      gsap.to(el, {
+        duration: 0.3,
+        y: 0,
+      });
+    },
+    beforeEnterBottom(el) {
+      el.style.transform = "translateY(400%)";
+    },
+    enterBottom(el) {
+      gsap.to(el, {
+        duration: 2,
+        ease: "power4.out",
+        y: 0,
       });
     },
   },
@@ -207,7 +267,7 @@ export default {
 .burger-button {
   margin-top: 50px;
   margin-left: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   width: 40%;
   display: flex;
   justify-content: flex-start;

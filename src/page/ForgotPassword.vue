@@ -2,41 +2,92 @@
   <div class="color">
     <div class="forgotPassword">
       <div class="header">
-        <img
-          src="../assets/img/back-button.svg"
-          alt="back-button"
-          class="back-button"
-          @click="goBack"
-        />
+        <transition
+          appear
+          @before-enter="beforeEnterTop"
+          @enter="enterTop"
+          id="eod"
+        >
+          <img
+            src="../assets/img/back-button.svg"
+            alt="back-button"
+            class="back-button"
+            @click="goBack"
+          />
+        </transition>
       </div>
-      <div class="text">Forgot Password?</div>
-      <div class="sub-text">
-        Don't worry! It occurs. Please enter the email address linked with your
-        account.
-      </div>
-
-      <div class="input-section">
-        <CommonInput class="element" text="Enter your email" inputType="text" />
-      </div>
-
-      <CommonButton
-        text="Send Code"
-        class="button"
-        wrapper="dark"
-        @click="sendCode"
-      />
-
-      <div class="footer">
-        <img
-          src="../assets/img/logo-mini.svg"
-          alt="logo-mini"
-          class="logo-mini"
-        />
-
-        <div class="footer-text">
-          Remember Password?
-          <a @click="goBack" style="color: #35c2c1">Home</a>
+      <transition
+        appear
+        @before-enter="beforeEnterTop"
+        @enter="enterTop"
+        id="eod"
+      >
+        <div class="text">Forgot Password?</div>
+      </transition>
+      <transition
+        appear
+        @before-enter="beforeEnterTop"
+        @enter="enterTop"
+        id="eod"
+      >
+        <div class="sub-text">
+          Don't worry! It occurs. Please enter the email address linked with
+          your account.
         </div>
+      </transition>
+      <transition
+        appear
+        @before-enter="beforeEnterBot"
+        @enter="enterTop"
+        id="eod"
+      >
+        <div class="input-section">
+          <CommonInput
+            class="element"
+            text="Enter your email"
+            inputType="text"
+          />
+        </div>
+      </transition>
+
+      <transition
+        appear
+        @before-enter="beforeEnterBot"
+        @enter="enterTop"
+        id="eod"
+      >
+        <CommonButton
+          text="Send Code"
+          class="button"
+          wrapper="dark"
+          @click="sendCode"
+        />
+      </transition>
+      <div class="footer">
+        <transition
+          appear
+          @before-enter="beforeEnterBot"
+          @enter="enterTop"
+          id="eod"
+        >
+          <img
+            src="../assets/img/logo-mini.svg"
+            alt="logo-mini"
+            class="logo-mini"
+          />
+        </transition>
+
+        <transition
+          appear
+          @before-enter="beforeEnterBot"
+          @enter="enterTop"
+          id="eod"
+        >
+          <div class="footer-text">
+            Remember Password?
+            <a @click="goBack" style="color: #35c2c1">Home</a>
+          </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -46,6 +97,7 @@
 import CommonButton from "@/components/CommonButton.vue";
 import CommonInput from "@/components/CommonInput.vue";
 import router from "@/router/router";
+import { gsap } from "gsap";
 export default {
   name: "ForgotPassword",
 
@@ -61,6 +113,26 @@ export default {
 
     goBack() {
       router.push("/");
+    },
+    beforeEnterTop(el) {
+      el.style.transform = "translateY(-1000%)";
+    },
+    enterTop(el) {
+      gsap.to(el, {
+        duration: 1,
+        ease: "power4.out",
+        y: 0,
+      });
+    },
+    beforeEnterBot(el) {
+      el.style.transform = "translateY(1000%)";
+    },
+    enterBot(el) {
+      gsap.from(el, {
+        duration: 1,
+        ease: "power4.out",
+        y: 0,
+      });
     },
   },
 };

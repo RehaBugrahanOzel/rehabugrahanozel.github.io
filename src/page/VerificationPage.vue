@@ -2,70 +2,119 @@
   <div class="color">
     <div class="verification">
       <div class="header">
-        <img
-          src="../assets/img/back-button.svg"
-          alt="back-button"
-          class="back-button"
-          @click="goBack"
-        />
+        <transition
+          appear
+          @before-enter="beforeEnterTop"
+          @enter="enterTop"
+          id="eod"
+        >
+          <img
+            src="../assets/img/back-button.svg"
+            alt="back-button"
+            class="back-button"
+            @click="goBack"
+          />
+        </transition>
       </div>
-      <div class="text">OTP Verification</div>
-      <div class="sub-text">
-        Enter the verification code we just sent on your email address.
-      </div>
+      <transition
+        appear
+        @before-enter="beforeEnterTop"
+        @enter="enterTop"
+        id="eod"
+      >
+        <div class="text">OTP Verification</div>
+      </transition>
+      <transition
+        appear
+        @before-enter="beforeEnterTop"
+        @enter="enterTop"
+        id="eod"
+      >
+        <div class="sub-text">
+          Enter the verification code we just sent on your email address.
+        </div>
+      </transition>
 
       <!---->
-      <div style="display: flex; flex-direction: row">
-        <input
-          type="text"
-          class="otp-input"
-          maxlength="1"
-          oninput="this.value=this.value.replace(/[^0-9]/g,'');
+      <transition
+        appear
+        @before-enter="beforeEnterBot"
+        @enter="enterTop"
+        id="eod"
+      >
+        <div style="display: flex; flex-direction: row">
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');
         document.getElementById('num2').focus();"
-          id="num1"
-        />
-        <input
-          type="text"
-          class="otp-input"
-          maxlength="1"
-          oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('num3').focus();"
-          id="num2"
-        />
-        <input
-          type="text"
-          class="otp-input"
-          maxlength="1"
-          oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('num4').focus();"
-          id="num3"
-        />
-        <input
-          type="text"
-          class="otp-input"
-          maxlength="1"
-          oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-          id="num4"
-        />
-      </div>
+            id="num1"
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('num3').focus();"
+            id="num2"
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('num4').focus();"
+            id="num3"
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+            id="num4"
+          />
+        </div>
+      </transition>
 
       <!---->
-      <CommonButton
-        text="Verify"
-        class="button"
-        wrapper="dark"
-        @click="verify"
-      />
+      <transition
+        appear
+        @before-enter="beforeEnterBot"
+        @enter="enterTop"
+        id="eod"
+      >
+        <CommonButton
+          text="Verify"
+          class="button"
+          wrapper="dark"
+          @click="verify"
+        />
+      </transition>
 
       <div class="footer">
-        <img
-          src="../assets/img/logo-mini.svg"
-          alt="logo-mini"
-          class="logo-mini"
-        />
+        <transition
+          appear
+          @before-enter="beforeEnterBot"
+          @enter="enterTop"
+          id="eod"
+        >
+          <img
+            src="../assets/img/logo-mini.svg"
+            alt="logo-mini"
+            class="logo-mini"
+          />
+        </transition>
 
-        <div class="footer-text">
-          Didn't received code?
-          <a @click="resend" style="color: #35c2c1">Resend</a>
-        </div>
+        <transition
+          appear
+          @before-enter="beforeEnterBot"
+          @enter="enterTop"
+          id="eod"
+        >
+          <div class="footer-text">
+            Didn't received code?
+            <a @click="resend" style="color: #35c2c1">Resend</a>
+          </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -74,6 +123,7 @@
 <script>
 import CommonButton from "@/components/CommonButton.vue";
 import router from "@/router/router";
+import { gsap } from "gsap";
 
 export default {
   name: "VerificationPage",
@@ -102,6 +152,26 @@ export default {
     resend() {},
     focusInputFirst() {
       document.getElementById("num1").focus();
+    },
+    beforeEnterTop(el) {
+      el.style.transform = "translateY(-1000%)";
+    },
+    enterTop(el) {
+      gsap.to(el, {
+        duration: 1,
+        ease: "power4.out",
+        y: 0,
+      });
+    },
+    beforeEnterBot(el) {
+      el.style.transform = "translateY(1000%)";
+    },
+    enterBot(el) {
+      gsap.from(el, {
+        duration: 1,
+        ease: "power4.out",
+        y: 0,
+      });
     },
   },
   mounted() {
