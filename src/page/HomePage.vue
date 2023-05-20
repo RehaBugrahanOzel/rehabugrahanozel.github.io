@@ -83,22 +83,27 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
-const BurgerMenu = defineAsyncComponent(() =>
-  import("@/components/BurgerMenu.vue")
-);
-const CategoryButton = defineAsyncComponent(() =>
-  import("../components/CategoryButton.vue")
-);
-const ExerciseTab = defineAsyncComponent(() =>
-  import("@/tabs/ExerciseTab.vue")
-);
-const VideoExerciseTab = defineAsyncComponent(() =>
-  import("@/tabs/VideoExerciseTab.vue")
-);
-const ExerciseButton = defineAsyncComponent(() =>
-  import("@/components/ExerciseButton.vue")
-);
+// import { defineAsyncComponent } from "vue";
+// const BurgerMenu = defineAsyncComponent(() =>
+//   import("@/components/BurgerMenu.vue")
+// );
+// const CategoryButton = defineAsyncComponent(() =>
+//   import("../components/CategoryButton.vue")
+// );
+// const ExerciseTab = defineAsyncComponent(() =>
+//   import("@/tabs/ExerciseTab.vue")
+// );
+// const VideoExerciseTab = defineAsyncComponent(() =>
+//   import("@/tabs/VideoExerciseTab.vue")
+// );
+// const ExerciseButton = defineAsyncComponent(() =>
+//   import("@/components/ExerciseButton.vue")
+// );
+import BurgerMenu from "@/components/BurgerMenu.vue";
+import CategoryButton from "../components/CategoryButton.vue";
+import ExerciseTab from "@/tabs/ExerciseTab.vue";
+import VideoExerciseTab from "@/tabs/VideoExerciseTab.vue";
+import ExerciseButton from "@/components/ExerciseButton.vue";
 import ExerciseOfTheDay from "../assets/img/exercise-of-the-day.svg";
 import Core from "../assets/img/body-parts/core.svg";
 import Arm from "../assets/img/body-parts/arm.svg";

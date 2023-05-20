@@ -78,14 +78,17 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
-const CommonButton = defineAsyncComponent(() =>
-  import("../components/CommonButton.vue")
-);
-const LoginTab = defineAsyncComponent(() => import("../tabs/LoginTab.vue"));
-const RegisterTab = defineAsyncComponent(() =>
-  import("../tabs/RegisterTab.vue")
-);
+// import { defineAsyncComponent } from "vue";
+// const CommonButton = defineAsyncComponent(() =>
+//   import("../components/CommonButton.vue")
+// );
+// const LoginTab = defineAsyncComponent(() => import("../tabs/LoginTab.vue"));
+// const RegisterTab = defineAsyncComponent(() =>
+//   import("../tabs/RegisterTab.vue")
+// );
+import CommonButton from "../components/CommonButton.vue";
+import LoginTab from "../tabs/LoginTab.vue";
+import RegisterTab from "../tabs/RegisterTab.vue";
 import "../assets/css/style.css";
 import { gsap } from "gsap";
 import router from "@/router/router";
