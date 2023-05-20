@@ -12,17 +12,35 @@
         <nav class="menu1">
           <a class="link1" @click="goProfile">Profile</a>
           <a class="link1" @click="goSettings">Settings</a>
-          <a class="link1" style="color: #f15b40" @click="logout">Logout</a>
+          <a class="link1" style="color: #f15b40" @click="openPopUp">Logout</a>
         </nav>
       </nav>
     </section>
+    <PopUp
+      v-if="popUpActive"
+      class="log-out-pop-up"
+      :questionText="'Do you really want to logout?'"
+      :confirmText="'LogOut'"
+      :declineText="'Decline'"
+      @decline="closePopUp"
+      @confirm="logout"
+    ></PopUp>
   </div>
 </template>
 
 <script>
 import router from "@/router/router";
+import PopUp from "../components/PopUp.vue";
 export default {
   name: "BurgerMenu",
+  components: {
+    PopUp,
+  },
+  data() {
+    return {
+      popUpActive: false,
+    };
+  },
   methods: {
     goProfile() {
       router.push("/profile");
@@ -35,6 +53,12 @@ export default {
     logout() {
       router.push("/");
       document.getElementById("toggle1").checked = false;
+    },
+    openPopUp() {
+      this.popUpActive = true;
+    },
+    closePopUp() {
+      this.popUpActive = false;
     },
   },
 };
@@ -173,5 +197,12 @@ a {
   color: rgb(61, 61, 61);
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
+}
+
+.log-out-pop-up {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
 }
 </style>
