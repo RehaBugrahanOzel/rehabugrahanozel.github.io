@@ -47,22 +47,21 @@
             type="text"
             class="otp-input"
             maxlength="1"
-            oninput="this.value=this.value.replace(/[^0-9]/g,'');
-        document.getElementById('num2').focus();"
+            oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value=this.value.replace(/[^0-9]/g,'')){document.getElementById('num2').focus()}"
             id="num1"
           />
           <input
             type="text"
             class="otp-input"
             maxlength="1"
-            oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('num3').focus();"
+            oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value=this.value.replace(/[^0-9]/g,'')){document.getElementById('num3').focus()}"
             id="num2"
           />
           <input
             type="text"
             class="otp-input"
             maxlength="1"
-            oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('num4').focus();"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');  if(this.value=this.value.replace(/[^0-9]/g,'')){document.getElementById('num4').focus()}"
             id="num3"
           />
           <input
