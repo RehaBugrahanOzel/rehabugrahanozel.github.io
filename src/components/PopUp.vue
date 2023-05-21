@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .outer {
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 8px;

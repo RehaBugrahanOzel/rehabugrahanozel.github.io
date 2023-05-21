@@ -62,9 +62,9 @@
   flex-wrap: wrap;
   align-items: center;
   position: absolute;
-  bottom: 30px;
   left: 50%;
   transform: translate(-50%, 0);
+  top: clamp(600px, 80vh, 9999px);
 }
 
 .text-head {
