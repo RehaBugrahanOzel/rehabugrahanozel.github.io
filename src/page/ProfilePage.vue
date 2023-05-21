@@ -31,7 +31,7 @@
               />
             </div>
 
-            <div class="save-cancel" v-if="editing">
+            <div class="edit-save-cancel" v-if="editing">
               <input v-model="tempValue" class="input" />
               <img
                 class="selection-icon"
@@ -234,9 +234,9 @@ export default {
 }
 
 .selection-icon {
-  width: 22px;
-  height: 22px;
-  margin: 2px;
+  width: 30px;
+  height: 30px;
+  margin: 4px;
 }
 
 /**/
@@ -261,5 +261,10 @@ export default {
 input:focus {
   outline: none;
   box-shadow: inset 0 -2px 0 black;
+}
+
+.edit-save-cancel {
+  display: flex;
+  align-items: center;
 }
 </style>
