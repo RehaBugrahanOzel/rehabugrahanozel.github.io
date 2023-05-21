@@ -17,16 +17,34 @@
 
       <div class="area">
         <div class="card">
-          <div class="foto-section">
+          <div class="photo-section">
             <img class="profile-img" src="../assets/img/profile.jpeg" />
-            <div class="image-selector"></div>
+            <img class="image-selector" src="../assets/img/camera-icon.svg" />
           </div>
           <div class="container">
-            <div class="name">
-              <div class="username">username</div>
-              <div class="edit-username"></div>
+            <div v-if="!editing">
+              <span class="username">{{ value }}</span>
+              <img
+                class="edit-username"
+                @click="enableEditing"
+                src="../assets/img/pen-icon.svg"
+              />
             </div>
 
+            <div class="save-cancel" v-if="editing">
+              <input v-model="tempValue" class="input" />
+              <img
+                class="selection-icon"
+                src="../assets/img/cancel-icon.svg"
+                @click="disableEditing"
+              />
+              <img
+                class="selection-icon"
+                src="../assets/img/save-icon.svg"
+                @click="saveEdit"
+              />
+            </div>
+            <br />
             <div class="information">username@username.com</div>
           </div>
         </div>
@@ -55,7 +73,11 @@ export default {
     CommonButton,
   },
   data() {
-    return {};
+    return {
+      value: "username",
+      tempValue: null,
+      editing: false,
+    };
   },
   created() {
     window.history.pushState(null, "", window.location.href);
@@ -71,6 +93,19 @@ export default {
 
     changePassword() {
       router.push("/verification");
+    },
+    enableEditing: function () {
+      this.tempValue = this.value;
+      this.editing = true;
+    },
+    disableEditing: function () {
+      this.tempValue = null;
+      this.editing = false;
+    },
+    saveEdit: function () {
+      // However we want to save it to the database
+      this.value = this.tempValue;
+      this.disableEditing();
     },
   },
 };
@@ -121,8 +156,6 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
-  /* width: 90%;
-    height: 80vh; */
   overflow: auto;
   flex-direction: row;
 }
@@ -160,6 +193,7 @@ export default {
   margin: 10px;
   overflow: hidden;
   height: 300px;
+  position: relative;
 }
 
 .container {
@@ -179,5 +213,53 @@ export default {
 .username {
   font-size: 24px;
   font-weight: bold;
+}
+
+.image-selector {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 280px;
+  left: 200px;
+}
+
+.edit-username {
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+}
+
+.photo-section {
+  position: relative;
+}
+
+.selection-icon {
+  width: 22px;
+  height: 22px;
+  margin: 2px;
+}
+
+/**/
+
+.input {
+  position: relative;
+  margin: auto;
+  max-width: 180px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 0;
+  padding: 10px 12px 2px 12px;
+  height: 20px;
+  font-size: 16px;
+  font-weight: 400;
+  background: white;
+  box-shadow: inset 0 -1px 0;
+  color: black;
+  transition: all 0.15s ease;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: inset 0 -2px 0 black;
 }
 </style>
