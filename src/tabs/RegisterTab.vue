@@ -15,13 +15,29 @@
     </div>
     <div class="text">Welcome to PostureFix! Register to start moving!</div>
     <div class="input-section">
-      <CommonInput class="element" text="Username" inputType="text" />
-      <CommonInput class="element" text="Enter your email" inputType="text" />
-      <CommonInput class="element" text="Password" inputType="password" />
+      <CommonInput
+        class="element"
+        text="Username"
+        inputType="text"
+        @inputVal="setUserName"
+      />
+      <CommonInput
+        class="element"
+        text="Enter your email"
+        inputType="email"
+        @inputVal="setEmail"
+      />
+      <CommonInput
+        class="element"
+        text="Password"
+        inputType="password"
+        @inputVal="setPassword"
+      />
       <CommonInput
         class="element"
         text="Confirm password"
         inputType="password"
+        @inputVal="setPasswordAgain"
       />
     </div>
     <CommonButton
@@ -36,6 +52,13 @@
       <CommonIconButton :src="googleIconSrc" class="element" />
       <CommonIconButton :src="appleIconSrc" class="element" />
     </div>
+    <ToastComponent
+      class="toast"
+      :contentText="message"
+      :confirmText="'Close'"
+      @confirm="closeToast"
+      v-if="toastActive"
+    ></ToastComponent>
   </div>
 </template>
 
@@ -43,6 +66,8 @@
 import CommonInput from "@/components/CommonInput.vue";
 import CommonButton from "../components/CommonButton.vue";
 import CommonIconButton from "../components/CommonIconButton.vue";
+import ToastComponent from "@/components/ToastComponent.vue";
+import { ref } from "vue";
 import FacebookIcon from "../assets/img/facebook-icon.svg";
 import GoogleIcon from "../assets/img/google-icon-light.svg";
 import AppleIcon from "../assets/img/apple-icon-light.svg";
@@ -55,13 +80,81 @@ export default {
     CommonInput,
     CommonButton,
     CommonIconButton,
+    ToastComponent,
   },
   methods: {
     goBack() {
       this.$emit("registerClosed", false);
     },
-    register() {
-      this.$emit("registeredIn");
+    setUserName(val) {
+      this.userName = val;
+    },
+    setEmail(val) {
+      this.email = val;
+    },
+    setPassword(val) {
+      this.password = val;
+    },
+    setPasswordAgain(val) {
+      this.passwordAgain = val;
+    },
+    passwordCheck() {
+      if (this.password === this.passwordAgain) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    async register() {
+      if (this.passwordCheck()) {
+        console.log(
+          "passwords are same and parameters are: ",
+          this.email,
+          this.password,
+          this.userName,
+          this.passwordAgain
+        );
+        try {
+          await this.$store.dispatch("register", {
+            email: this.email,
+            password: this.password,
+            name: this.userName,
+          });
+          this.$emit("registeredIn");
+        } catch (err) {
+          switch (err.code) {
+            case "auth/email-already-in-use":
+              this.message = "Email already in use";
+              break;
+            case "auth/invalid-email":
+              this.message = "Invalid email";
+              break;
+            case "auth/operation-not-allowed":
+              this.message = "Operation not allowed";
+              break;
+            case "auth/weak-password":
+              this.message = "Weak Password";
+              break;
+            default:
+              this.message = "Something went wrong";
+          }
+          this.toastActive = true;
+          console.log("Caught error", err.message);
+        }
+      } else {
+        console.log(
+          "passwords are not same and parameters are: ",
+          this.email,
+          this.password,
+          this.userName,
+          this.passwordAgain
+        );
+        this.message = "Password don't match!";
+        this.toastActive = true;
+      }
+    },
+    closeToast() {
+      this.toastActive = false;
     },
   },
   data() {
@@ -69,6 +162,12 @@ export default {
       facebookIconSrc: FacebookIcon,
       googleIconSrc: GoogleIcon,
       appleIconSrc: AppleIcon,
+      userName: ref(""),
+      email: ref(""),
+      password: ref(""),
+      passwordAgain: ref(""),
+      toastActive: false,
+      message: "",
     };
   },
 };
@@ -175,5 +274,11 @@ export default {
   height: 26px;
   border-radius: 8px;
   margin: 0 4px;
+}
+.toast {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
 }
 </style>

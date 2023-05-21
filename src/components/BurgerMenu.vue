@@ -51,6 +51,7 @@ export default {
       document.getElementById("toggle1").checked = false;
     },
     logout() {
+      this.signOut();
       router.push("/");
       document.getElementById("toggle1").checked = false;
     },
@@ -59,6 +60,9 @@ export default {
     },
     closePopUp() {
       this.popUpActive = false;
+    },
+    async signOut() {
+      await this.$store.dispatch("logOut");
     },
   },
 };

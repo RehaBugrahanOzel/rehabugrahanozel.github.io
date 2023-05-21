@@ -15,11 +15,17 @@
     </div>
     <div class="text">Welcome back! Glad to see you, Again!</div>
     <div class="input-section">
-      <CommonInput class="element" text="Enter your email" inputType="text" />
+      <CommonInput
+        class="element"
+        text="Enter your email"
+        inputType="text"
+        @inputVal="setEmail"
+      />
       <CommonInput
         class="element"
         text="Enter your password"
         inputType="password"
+        @inputVal="setPassword"
       />
       <div class="forgot-password">
         <div @click="forgotPassword">Forgot Password?</div>
@@ -34,8 +40,15 @@
     </div>
     <div class="register-now">
       Don't have an account?
-      <a @click="goToRegister" style="color: #35c2c1">Home</a>
+      <a @click="goToRegister" style="color: #35c2c1">Register</a>
     </div>
+    <ToastComponent
+      class="toast"
+      :contentText="message"
+      :confirmText="'Close'"
+      @confirm="closeToast"
+      v-if="toastActive"
+    ></ToastComponent>
   </div>
 </template>
 
@@ -43,6 +56,8 @@
 import CommonInput from "@/components/CommonInput.vue";
 import CommonButton from "../components/CommonButton.vue";
 import CommonIconButton from "../components/CommonIconButton.vue";
+import ToastComponent from "@/components/ToastComponent.vue";
+import { ref } from "vue";
 import FacebookIcon from "../assets/img/facebook-icon.svg";
 import GoogleIcon from "../assets/img/google-icon-light.svg";
 import AppleIcon from "../assets/img/apple-icon.svg";
@@ -56,21 +71,53 @@ export default {
     CommonInput,
     CommonButton,
     CommonIconButton,
+    ToastComponent,
   },
   methods: {
     goBack() {
       this.$emit("loginClosed", false);
     },
-    login() {
+    async login() {
       console.log("login pressed");
-      this.$emit("loggedIn");
+      try {
+        await this.$store.dispatch("logIn", {
+          email: this.email,
+          password: this.password,
+        });
+        this.$emit("loggedIn");
+      } catch (err) {
+        switch (err.code) {
+          case "auth/invalid-email":
+            this.message = "Invalid Email Address";
+            break;
+          case "auth/wrong-password":
+            this.message = "Wrong password";
+            break;
+          case "auth/user-no-found":
+            this.message = "User not found";
+            break;
+          default:
+            this.message = "Something went wrong";
+        }
+        this.toastActive = true;
+        console.log("Caught error", err.message);
+      }
     },
-
+    setEmail(val) {
+      this.email = val;
+    },
+    setPassword(val) {
+      this.password = val;
+    },
     forgotPassword() {
       router.push("/forgotPassword");
     },
     goToRegister() {
-      router.push("/");
+      console.log("emitted");
+      this.$emit("goRegister");
+    },
+    closeToast() {
+      this.toastActive = false;
     },
   },
   data() {
@@ -78,6 +125,10 @@ export default {
       facebookIconSrc: FacebookIcon,
       googleIconSrc: GoogleIcon,
       appleIconSrc: AppleIcon,
+      email: ref(""),
+      password: ref(""),
+      toastActive: false,
+      message: "",
     };
   },
 };
@@ -181,5 +232,11 @@ export default {
   font-size: 14px;
   margin-top: 83px;
   line-height: 40px;
+}
+.toast {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
 }
 </style>

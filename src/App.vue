@@ -8,6 +8,9 @@
 // import HomePage from "./page/HomePage.vue";
 export default {
   name: "App",
+  async beforeMount() {
+    await this.$store.dispatch("fetchUser");
+  },
   // components: {
   //   InitialPage,
   //   HomePage,

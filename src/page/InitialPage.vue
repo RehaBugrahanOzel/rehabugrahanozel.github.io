@@ -58,6 +58,7 @@
         :isLoginActive="isLoginActive"
         @loginClosed="loginClosed"
         @loggedIn="loggedIn"
+        @goRegister="goRegister"
       />
     </transition>
     <transition
@@ -115,6 +116,7 @@ export default {
     },
     registeredIn() {
       this.isLoginActive = false;
+      console.log("registered");
       router.push("/home");
     },
     register() {
@@ -183,6 +185,11 @@ export default {
         ease: "power4.out",
         y: 0,
       });
+    },
+    goRegister() {
+      console.log("go register");
+      this.isLoginActive = false;
+      this.isRegisterActive = true;
     },
   },
   created() {

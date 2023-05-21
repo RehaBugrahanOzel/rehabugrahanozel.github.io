@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import NProgress from "nprogress";
+import { getAuth } from "firebase/auth";
 
 const routers = [
   {
@@ -11,6 +12,9 @@ const routers = [
     path: "/home",
     component: () => import("../page/HomePage.vue"),
     name: "home-page",
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/forgotPassword",
@@ -21,11 +25,17 @@ const routers = [
     path: "/profile",
     component: () => import("../page/ProfilePage.vue"),
     name: "profile-page",
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/settings",
     component: () => import("../page/SettingPage.vue"),
     name: "settings-page",
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/verification",
@@ -46,6 +56,7 @@ const routers = [
 ];
 
 const router = createRouter({
+  mode: "history",
   history: createWebHistory(),
   routes: routers,
 });
@@ -64,4 +75,18 @@ router.afterEach(() => {
   NProgress.done();
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.path === "/" && getAuth().currentUser) {
+    next("/Home");
+    return;
+  }
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    !getAuth().currentUser
+  ) {
+    next("/");
+    return;
+  }
+  next();
+});
 export default router;

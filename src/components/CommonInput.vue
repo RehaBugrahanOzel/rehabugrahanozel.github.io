@@ -6,6 +6,10 @@
       :class="
         inputType === 'password' ? 'input-text-password' : 'input-text-txt'
       "
+      value
+      required
+      autofocus
+      v-model="inputVal"
     />
     <div v-if="inputType === 'password'">
       <img
@@ -40,6 +44,7 @@ export default {
       passwordShow: PasswordShow,
       passwordHide: PasswordHide,
       src: this.passwordHide,
+      inputVal: "",
     };
   },
   methods: {
@@ -52,6 +57,11 @@ export default {
         this.src = this.passwordHide;
         console.log("tiklandi", this.inputTypeData);
       }
+    },
+  },
+  watch: {
+    inputVal(val) {
+      this.$emit("inputVal", val);
     },
   },
 };

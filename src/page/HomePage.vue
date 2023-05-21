@@ -113,6 +113,7 @@ import FullBody from "../assets/img/body-parts/full-body.svg";
 import Leg from "../assets/img/body-parts/leg.svg";
 import "../assets/css/style.css";
 import { gsap } from "gsap";
+import { getAuth } from "firebase/auth";
 
 export default {
   name: "HomePage",
@@ -148,6 +149,15 @@ export default {
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
+    getAuth().onAuthStateChanged((user) => {
+      this.$store.dispatch("fetchUser", user);
+    });
+  },
+
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
   },
 
   methods: {
