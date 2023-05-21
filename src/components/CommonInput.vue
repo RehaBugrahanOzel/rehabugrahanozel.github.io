@@ -9,7 +9,7 @@
       value
       required
       autofocus
-      v-model="inputVal"
+      v-model.trim="inputVal"
     />
     <div v-if="inputType === 'password'">
       <img
