@@ -112,38 +112,6 @@ export default {
 </script>
 
 <style>
-.back-button {
-  width: 41px;
-  height: 41px;
-  position: absolute;
-  left: 0;
-  margin: 9px 0 0 23px;
-}
-.initial {
-  background: linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(223, 236, 252, 1) 33%,
-    rgba(207, 226, 250, 1) 50%,
-    rgba(207, 226, 250, 1) 68%
-  );
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-}
-
-.burger-button {
-  margin-top: 50px;
-  margin-left: 2px;
-  margin-bottom: 10px;
-  width: 40%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
 .page-image {
   max-width: 360px;
   max-height: 162px;
@@ -164,12 +132,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-}
-
-.page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .card {

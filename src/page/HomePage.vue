@@ -244,41 +244,6 @@ export default {
 </script>
 
 <style>
-/* .exercises-tab {
-  background-color: ;
-  position: absolute;
-  top: 44px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  border-radius: 32px 32px 0 0;
-} */
-
-.initial {
-  background: linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(223, 236, 252, 1) 33%,
-    rgba(207, 226, 250, 1) 50%,
-    rgba(207, 226, 250, 1) 68%
-  );
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-}
-
-.burger-button {
-  margin-top: 50px;
-  margin-left: 2px;
-  margin-bottom: 20px;
-  width: 40%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
 .page-image {
   max-width: 360px;
   max-height: 162px;
@@ -291,8 +256,6 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
-  /* width: 90%;
-  height: 80vh; */
   overflow: auto;
   flex-direction: row;
 }
@@ -312,12 +275,6 @@ export default {
 .exercise-button {
   width: 300x;
   height: 162px;
-}
-
-.page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .exercise-tab {

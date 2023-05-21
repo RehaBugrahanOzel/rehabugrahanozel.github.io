@@ -1,5 +1,5 @@
 <template>
-  <div class="exercise">
+  <div class="page">
     <div class="header">
       <img
         src="../assets/img/back-button.svg"
@@ -68,14 +68,6 @@ export default {
 </script>
 
 <style scoped>
-.exercise {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 7px;
-  font-family: "Arial";
-}
-
 .header {
   display: flex;
   flex-direction: row;

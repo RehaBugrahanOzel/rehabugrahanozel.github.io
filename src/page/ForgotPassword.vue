@@ -1,6 +1,6 @@
 <template>
-  <div class="color">
-    <div class="forgotPassword">
+  <div class="initial">
+    <div class="page">
       <div class="header">
         <transition
           appear
@@ -22,7 +22,7 @@
         @enter="enterTop"
         id="eod"
       >
-        <div class="text">Forgot Password?</div>
+        <div class="text-head">Forgot Password?</div>
       </transition>
       <transition
         appear
@@ -139,27 +139,6 @@ export default {
 </script>
 
 <style scoped>
-.color {
-  background: linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(223, 236, 252, 1) 33%,
-    rgba(207, 226, 250, 1) 50%,
-    rgba(207, 226, 250, 1) 68%
-  );
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-}
-.forgotPassword {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 7px;
-  font-family: "Arial";
-}
 .input-section {
   display: flex;
   align-items: center;
@@ -187,55 +166,10 @@ export default {
   top: 71px;
 }
 
-.text {
-  font-weight: normal;
-  font-size: 30px;
-  line-height: 39px;
-  line-height: 100%;
-  font-family: "Arial";
-  font-weight: 700;
-  margin: 145px 0px 10px 0px;
-}
-
 .button {
   width: 80%;
   max-width: 330px;
   height: 56px;
   margin-top: 7%;
-}
-
-.sub-text {
-  font-size: 16px;
-  margin-top: 30px;
-  position: relative;
-  max-width: 500px;
-  margin-left: 20px;
-  margin-bottom: 57px;
-  font-weight: 500;
-  color: #8391a1;
-}
-
-.footer-text {
-  font-size: 14px;
-  margin-top: 26px;
-  bottom: 30px;
-  display: flex;
-  justify-content: center;
-}
-
-.logo-mini {
-  width: 51px;
-  height: 59px;
-}
-
-.footer {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translate(-50%, 0);
 }
 </style>

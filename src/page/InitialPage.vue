@@ -213,20 +213,7 @@ export default {
   left: 0px;
   border-radius: 32px 32px 0 0;
 }
-.initial {
-  background: linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(223, 236, 252, 1) 33%,
-    rgba(207, 226, 250, 1) 50%,
-    rgba(207, 226, 250, 1) 68%
-  );
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-}
+
 .title-section {
   position: absolute;
   left: 50%;

@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="page">
     <div class="header">
       <img
         src="../assets/img/back-button.svg"

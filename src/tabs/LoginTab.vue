@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="page">
     <div class="header">
       <img
         src="../assets/img/back-button.svg"
@@ -44,7 +44,7 @@ import CommonInput from "@/components/CommonInput.vue";
 import CommonButton from "../components/CommonButton.vue";
 import CommonIconButton from "../components/CommonIconButton.vue";
 import FacebookIcon from "../assets/img/facebook-icon.svg";
-import GoogleIcon from "../assets/img/google-icon.svg";
+import GoogleIcon from "../assets/img/google-icon-light.svg";
 import AppleIcon from "../assets/img/apple-icon.svg";
 import router from "@/router/router";
 export default {
@@ -84,14 +84,6 @@ export default {
 </script>
 
 <style scoped>
-.login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 7px;
-  font-family: "Arial";
-}
-
 .input-section {
   display: flex;
   align-items: center;
@@ -136,7 +128,6 @@ export default {
   font-size: 14px;
   font-family: "Arial";
 }
-
 .button {
   width: 80%;
   max-width: 330px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="video-exercise">
+  <div class="page">
     <div class="header">
       <img
         src="../assets/img/back-button.svg"
@@ -74,13 +74,6 @@ export default {
   border-radius: 8px;
   background-color: #cdcdcd;
   padding: 27px;
-}
-.video-exercise {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 7px;
-  font-family: "Arial";
 }
 .video-player {
   width: 90%;
