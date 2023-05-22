@@ -18,7 +18,7 @@
       <div class="area">
         <div class="card">
           <div class="photo-section">
-            <img class="profile-img" src="../assets/img/profile.jpeg" />
+            <img class="profile-img" src="../assets/img/profile.svg" />
             <img class="image-selector" src="../assets/img/camera-icon.svg" />
           </div>
           <div class="container">
@@ -182,7 +182,7 @@ export default {
   height: 30px;
   position: absolute;
   top: 280px;
-  left: 200px;
+  left: 280px;
 }
 
 .edit-username {
