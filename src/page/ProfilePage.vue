@@ -19,11 +19,15 @@
         <div class="card">
           <div class="photo-section">
             <img class="profile-img" src="../assets/img/profile.svg" />
-            <img class="image-selector" src="../assets/img/camera-icon.svg" />
+            <!-- <img class="image-selector" src="../assets/img/camera-icon.svg" /> -->
+            <ImageInput
+              class="image-selector"
+              @input="handleFileChange"
+            ></ImageInput>
           </div>
           <div class="container">
             <div v-if="!editing">
-              <span class="username">{{ value }}</span>
+              <span class="username">{{ userName }}</span>
               <img
                 class="edit-username"
                 @click="enableEditing"
@@ -45,7 +49,7 @@
               />
             </div>
             <br />
-            <div class="information">username@username.com</div>
+            <div class="information">{{ userEmail }}</div>
           </div>
         </div>
 
@@ -63,6 +67,7 @@
 <script>
 import BurgerMenu from "@/components/BurgerMenu.vue";
 import CommonButton from "@/components/CommonButton.vue";
+import ImageInput from "../components/ImageInput.vue";
 import "../assets/css/style.css";
 import router from "@/router/router";
 
@@ -71,19 +76,24 @@ export default {
   components: {
     BurgerMenu,
     CommonButton,
+    ImageInput,
   },
   data() {
     return {
-      value: "username",
       tempValue: null,
       editing: false,
+      selectedFile: null,
     };
   },
-  created() {
+  async created() {
     window.history.pushState(null, "", window.location.href);
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
+    this.$store.dispatch("getUserName");
+    this.$store.dispatch("getUserEmail");
+    console.log("userdata", this.$store.state.user.data);
+    console.log("username", this.$store.state.user.email);
   },
 
   methods: {
@@ -95,7 +105,7 @@ export default {
       router.push("/verification");
     },
     enableEditing: function () {
-      this.tempValue = this.value;
+      this.tempValue = this.userName;
       this.editing = true;
     },
     disableEditing: function () {
@@ -104,8 +114,26 @@ export default {
     },
     saveEdit: function () {
       // However we want to save it to the database
+      //this.$store.dispatch("setUserName", this.tempValue);
       this.value = this.tempValue;
       this.disableEditing();
+    },
+    handleFileChange(e) {
+      this.selectedFile = e;
+      console.log("file that emitted", this.selectedFile);
+      this.uploadSelectedImage(this.selectedFile);
+    },
+    uploadSelectedImage(file) {
+      console.log("file that will be uploaded", file);
+      this.$store.dispatch("uploadUserPicture", file);
+    },
+  },
+  computed: {
+    userName() {
+      return this.$store.state.user.name;
+    },
+    userEmail() {
+      return this.$store.state.user.email;
     },
   },
 };
@@ -177,14 +205,6 @@ export default {
   font-weight: bold;
 }
 
-.image-selector {
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  top: 280px;
-  left: 280px;
-}
-
 .edit-username {
   width: 20px;
   height: 20px;
@@ -193,6 +213,14 @@ export default {
 
 .photo-section {
   position: relative;
+}
+
+.photo-section > .image-selector {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 280px;
+  left: 280px;
 }
 
 .selection-icon {
