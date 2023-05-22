@@ -14,7 +14,7 @@ import {
 } from "firebase/storage";
 import { db } from "./firebaseConfig";
 import router from "./router/router";
-import { metadata } from "core-js/actual/reflect";
+//import { metadata } from "core-js/actual/reflect";
 const store = createStore({
   state: {
     user: {
@@ -117,10 +117,10 @@ const store = createStore({
       context.commit("SET_USER_NAME", name);
     },
     async uploadUserPicture(file) {
-      var currentUser = getAuth().currentUser;
+      //var currentUser = getAuth().currentUser;
       var storage = getStorage();
-      var imageRef = ref(storage, "images/" + currentUser.uid + ".jpeg");
-      uploadBytesResumable(imageRef, file, metadata)
+      var imageRef = ref(storage, "images/" + file.name);
+      uploadBytesResumable(imageRef, file)
         .then((snapshot) => {
           console.log("Uploaded", snapshot.totalBytes, "bytes.");
           console.log("File metadata:", snapshot.metadata);

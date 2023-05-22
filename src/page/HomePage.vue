@@ -69,7 +69,7 @@
       appear
       @before-enter="beforeEnterTab"
       @enter="enterTab"
-      id="reha-transition"
+      id="video-exercise-transition"
     >
       <VideoExerciseTab
         class="video-exercise-tab"
@@ -173,7 +173,7 @@ export default {
 
     exerciseClosed(state) {
       this.isPageShown = state;
-      gsap.to(".exercise", {
+      gsap.to("#exercise-transition", {
         duration: 1,
         ease: "power4.out",
         y: window.innerHeight,
@@ -201,7 +201,7 @@ export default {
     },
     videoExerciseClosed(state) {
       this.isExerciseActive = true;
-      gsap.to("#reha-transition", {
+      gsap.to("#video-exercise-transition", {
         duration: 1,
         ease: "power4.out",
         y: window.innerHeight,

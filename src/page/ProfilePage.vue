@@ -18,7 +18,11 @@
       <div class="area">
         <div class="card">
           <div class="photo-section">
-            <img class="profile-img" src="../assets/img/profile.svg" />
+            <img
+              class="profile-img"
+              id="profile-img"
+              src="../assets/img/profile.svg"
+            />
             <!-- <img class="image-selector" src="../assets/img/camera-icon.svg" /> -->
             <ImageInput
               class="image-selector"
@@ -70,6 +74,13 @@ import CommonButton from "@/components/CommonButton.vue";
 import ImageInput from "../components/ImageInput.vue";
 import "../assets/css/style.css";
 import router from "@/router/router";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { getAuth } from "firebase/auth";
 
 export default {
   name: "ProfilePage",
@@ -94,6 +105,7 @@ export default {
     this.$store.dispatch("getUserEmail");
     console.log("userdata", this.$store.state.user.data);
     console.log("username", this.$store.state.user.email);
+    this.getProfileImage();
   },
 
   methods: {
@@ -125,7 +137,46 @@ export default {
     },
     uploadSelectedImage(file) {
       console.log("file that will be uploaded", file);
-      this.$store.dispatch("uploadUserPicture", file);
+      this.uploadUserPicture(file);
+      //this.$store.dispatch("uploadUserPicture", file);
+    },
+    async uploadUserPicture(file) {
+      var currentUser = getAuth().currentUser;
+      var storage = getStorage();
+      var imageRef = ref(storage, "images/" + currentUser.uid);
+      await uploadBytesResumable(imageRef, file)
+        .then((snapshot) => {
+          console.log("Uploaded", snapshot.totalBytes, "bytes.");
+          console.log("File metadata:", snapshot.metadata);
+          this.getProfileImage();
+        })
+        .catch((error) => {
+          console.error("Upload failed", error);
+        });
+    },
+    async getProfileImage() {
+      var currentUser = getAuth().currentUser;
+      const storage = getStorage();
+      getDownloadURL(ref(storage, "images/" + currentUser.uid))
+        .then((url) => {
+          // This can be downloaded directly:
+          const xhr = new XMLHttpRequest();
+          xhr.responseType = "blob";
+          // eslint-disable-next-line
+          xhr.onload = (event) => {
+            // eslint-disable-next-line
+            const blob = xhr.response;
+          };
+          xhr.open("GET", url);
+          xhr.send();
+
+          // Or inserted into an <img> element
+          const img = document.getElementById("profile-img");
+          img.setAttribute("src", url);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   computed: {
@@ -183,7 +234,9 @@ export default {
   margin: 10px;
   overflow: hidden;
   height: 300px;
+  width: 302px;
   position: relative;
+  object-fit: cover;
 }
 
 .container {

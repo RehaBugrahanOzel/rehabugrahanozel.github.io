@@ -123,7 +123,7 @@ export default {
       this.isRegisterActive = true;
     },
     loginClosed(state) {
-      gsap.to(".login", {
+      gsap.to("#login-transition", {
         duration: 1,
         ease: "power4.out",
         y: window.innerHeight,
@@ -133,7 +133,7 @@ export default {
       }, 1000);
     },
     registerClosed(state) {
-      gsap.to(".register", {
+      gsap.to("#register-transition", {
         duration: 1,
         ease: "power4.out",
         y: window.innerHeight,
