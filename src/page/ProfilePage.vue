@@ -18,16 +18,16 @@
       <div class="area">
         <div class="card">
           <div class="photo-section">
+            <img class="profile-img" id="profile-img" :src="profileImage" />
             <img
-              class="profile-img"
-              id="profile-img"
-              src="../assets/img/profile.svg"
+              class="image-selector"
+              src="../assets/img/camera-icon.svg"
+              @click="openCamera"
             />
-            <!-- <img class="image-selector" src="../assets/img/camera-icon.svg" /> -->
-            <ImageInput
+            <!-- <ImageInput
               class="image-selector"
               @input="handleFileChange"
-            ></ImageInput>
+            ></ImageInput> -->
           </div>
           <div class="container">
             <div v-if="!editing">
@@ -71,7 +71,7 @@
 <script>
 import BurgerMenu from "@/components/BurgerMenu.vue";
 import CommonButton from "@/components/CommonButton.vue";
-import ImageInput from "../components/ImageInput.vue";
+//import ImageInput from "../components/ImageInput.vue";
 import "../assets/css/style.css";
 import router from "@/router/router";
 import {
@@ -87,13 +87,16 @@ export default {
   components: {
     BurgerMenu,
     CommonButton,
-    ImageInput,
+    //ImageInput,
   },
   data() {
     return {
       tempValue: null,
       editing: false,
       selectedFile: null,
+      testText: "",
+      imageSourceUrl: "",
+      timer: null,
     };
   },
   async created() {
@@ -106,6 +109,16 @@ export default {
     console.log("userdata", this.$store.state.user.data);
     console.log("username", this.$store.state.user.email);
     this.getProfileImage();
+  },
+
+  mounted() {
+    document.addEventListener("profilePictureChange", function handler(e) {
+      console.log(e.detail);
+      this.uploadSelectedImage(e.detail);
+    });
+    this.timer = setInterval(() => {
+      this.getProfileImage();
+    }, 1000);
   },
 
   methods: {
@@ -130,11 +143,13 @@ export default {
       this.value = this.tempValue;
       this.disableEditing();
     },
-    handleFileChange(e) {
-      this.selectedFile = e;
-      console.log("file that emitted", this.selectedFile);
-      this.uploadSelectedImage(this.selectedFile);
+    async openCamera() {
+      await androidApp.chooseImage(getAuth().currentUser.uid);
     },
+    // async handleFileChange(file) {
+    //   console.log(file.detail);
+    //   //this.uploadSelectedImage(file);
+    // },
     uploadSelectedImage(file) {
       console.log("file that will be uploaded", file);
       this.uploadUserPicture(file);
@@ -171,8 +186,9 @@ export default {
           xhr.send();
 
           // Or inserted into an <img> element
-          const img = document.getElementById("profile-img");
-          img.setAttribute("src", url);
+          //const img = document.getElementById("profile-img");
+          this.imageSourceUrl = url;
+          //img.setAttribute("src", url);
         })
         .catch((error) => {
           console.log(error);
@@ -186,6 +202,12 @@ export default {
     userEmail() {
       return this.$store.state.user.email;
     },
+    profileImage() {
+      return this.imageSourceUrl;
+    },
+  },
+  beforeUnmount() {
+    clearInterval(this.timer);
   },
 };
 </script>
@@ -268,7 +290,7 @@ export default {
   position: relative;
 }
 
-.photo-section > .image-selector {
+.image-selector {
   width: 30px;
   height: 30px;
   position: absolute;
