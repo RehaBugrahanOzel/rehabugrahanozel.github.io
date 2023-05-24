@@ -14,7 +14,6 @@ import {
 } from "firebase/storage";
 import { db } from "./firebaseConfig";
 import router from "./router/router";
-//import { metadata } from "core-js/actual/reflect";
 const store = createStore({
   state: {
     user: {
@@ -22,6 +21,7 @@ const store = createStore({
       data: null,
       email: null,
       name: null,
+      picture: null,
     },
   },
   getters: {
@@ -42,6 +42,9 @@ const store = createStore({
     SET_USER_EMAIL(state, value) {
       state.user.email = value;
     },
+    SET_USER_PICTURE(state, value) {
+      state.user.picture = value;
+    },
   },
   actions: {
     async register(context, { email, password, name }) {
@@ -57,6 +60,7 @@ const store = createStore({
         await setDoc(doc(db, "profiles", response.user.uid), {
           name: name,
           email: email,
+          pictureName: "avatar-4.svg",
         });
         context.commit("SET_USER", response.user);
         context.commit("SET_USER_EMAIL", email);
@@ -109,6 +113,13 @@ const store = createStore({
       console.log("data", data);
       context.commit("SET_USER_EMAIL", data.email);
     },
+    async getUserPicture(context) {
+      var currentUser = getAuth().currentUser;
+      console.log("current user", currentUser);
+      var data = (await getDoc(doc(db, "profiles", currentUser.uid))).data();
+      console.log("data", data);
+      context.commit("SET_USER_PICTURE", data.pictureName);
+    },
     async setUserName(context, { userName }) {
       var currentUser = getAuth().currentUser;
       await setDoc(doc(db, "profiles", currentUser.uid), {
@@ -117,7 +128,6 @@ const store = createStore({
       context.commit("SET_USER_NAME", name);
     },
     async uploadUserPicture(file) {
-      //var currentUser = getAuth().currentUser;
       var storage = getStorage();
       var imageRef = ref(storage, "images/" + file.name);
       uploadBytesResumable(imageRef, file)
@@ -135,5 +145,4 @@ const store = createStore({
   },
 });
 
-// export the store
 export default store;

@@ -2,7 +2,6 @@
   <div class="initial">
     <div>
       <div class="burger-button" v-if="!videoExerciseActive">
-        <!--<img src="../assets/img/hamburger-icon.svg" class="element" />-->
         <transition
           appear
           @before-enter="beforeEnterBurger"
@@ -83,22 +82,6 @@
 </template>
 
 <script>
-// import { defineAsyncComponent } from "vue";
-// const BurgerMenu = defineAsyncComponent(() =>
-//   import("@/components/BurgerMenu.vue")
-// );
-// const CategoryButton = defineAsyncComponent(() =>
-//   import("../components/CategoryButton.vue")
-// );
-// const ExerciseTab = defineAsyncComponent(() =>
-//   import("@/tabs/ExerciseTab.vue")
-// );
-// const VideoExerciseTab = defineAsyncComponent(() =>
-//   import("@/tabs/VideoExerciseTab.vue")
-// );
-// const ExerciseButton = defineAsyncComponent(() =>
-//   import("@/components/ExerciseButton.vue")
-// );
 import BurgerMenu from "@/components/BurgerMenu.vue";
 import CategoryButton from "../components/CategoryButton.vue";
 import ExerciseTab from "@/tabs/ExerciseTab.vue";
@@ -154,6 +137,10 @@ export default {
     });
   },
 
+  async mounted() {
+    await this.$store.dispatch("getUserPicture");
+  },
+
   computed: {
     user() {
       return this.$store.getters.user;
@@ -195,9 +182,6 @@ export default {
     exerciseChoosed(state, item) {
       this.videoExerciseActive = state;
       this.videoExerciseInfo = item;
-      // setTimeout(() => {
-      //   this.isExerciseActive = false;
-      // }, 1000);
     },
     videoExerciseClosed(state) {
       this.isExerciseActive = true;

@@ -8,7 +8,6 @@
         @click="goBack"
       />
       <div class="burger-button">
-        <!--<img src="../assets/img/hamburger-icon.svg" class="element" />-->
         <BurgerMenu></BurgerMenu>
       </div>
       <div class="page">
@@ -22,12 +21,8 @@
             <img
               class="image-selector"
               src="../assets/img/camera-icon.svg"
-              @click="openCamera"
+              @click="selectAvatar"
             />
-            <!-- <ImageInput
-              class="image-selector"
-              @input="handleFileChange"
-            ></ImageInput> -->
           </div>
           <div class="container">
             <div v-if="!editing">
@@ -65,29 +60,34 @@
         />
       </div>
     </div>
+    <div class="container-wrapper" v-if="isAvatarListOpen">
+      <img
+        class="avatar-close-img"
+        src="../assets/img/avatar_close.svg"
+        @click="isAvatarListOpen = false"
+      />
+      <AvatarList @avatarSelected="avatarSelected"></AvatarList>
+    </div>
   </div>
 </template>
 
 <script>
 import BurgerMenu from "@/components/BurgerMenu.vue";
 import CommonButton from "@/components/CommonButton.vue";
-//import ImageInput from "../components/ImageInput.vue";
+import AvatarList from "../components/AvatarList.vue";
 import "../assets/css/style.css";
 import router from "@/router/router";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { getAuth } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 export default {
   name: "ProfilePage",
   components: {
     BurgerMenu,
     CommonButton,
-    //ImageInput,
+    AvatarList,
   },
   data() {
     return {
@@ -97,6 +97,7 @@ export default {
       testText: "",
       imageSourceUrl: "",
       timer: null,
+      isAvatarListOpen: false,
     };
   },
   async created() {
@@ -112,13 +113,9 @@ export default {
   },
 
   mounted() {
-    document.addEventListener("profilePictureChange", function handler(e) {
-      console.log(e.detail);
-      this.uploadSelectedImage(e.detail);
-    });
-    this.timer = setInterval(() => {
-      this.getProfileImage();
-    }, 1000);
+    this.$store.dispatch("getUserPicture");
+    console.log("picture name", this.$store.state.user.picture);
+    this.getProfileImage(this.$store.state.user.picture);
   },
 
   methods: {
@@ -139,41 +136,28 @@ export default {
       this.editing = false;
     },
     saveEdit: function () {
-      // However we want to save it to the database
-      //this.$store.dispatch("setUserName", this.tempValue);
       this.value = this.tempValue;
       this.disableEditing();
     },
-    async openCamera() {
-      await androidApp.chooseImage(getAuth().currentUser.uid);
+    selectAvatar() {
+      console.log("avatar select opened");
+      this.isAvatarListOpen = true;
     },
-    // async handleFileChange(file) {
-    //   console.log(file.detail);
-    //   //this.uploadSelectedImage(file);
-    // },
-    uploadSelectedImage(file) {
-      console.log("file that will be uploaded", file);
-      this.uploadUserPicture(file);
-      //this.$store.dispatch("uploadUserPicture", file);
+    avatarSelected(name) {
+      this.getProfileImage(name);
+      const userId = getAuth().currentUser.uid;
+      const ref = doc(db, "profiles", userId);
+      this.updateUserPic(ref, name);
+      this.isAvatarListOpen = false;
     },
-    async uploadUserPicture(file) {
-      var currentUser = getAuth().currentUser;
-      var storage = getStorage();
-      var imageRef = ref(storage, "images/" + currentUser.uid);
-      await uploadBytesResumable(imageRef, file)
-        .then((snapshot) => {
-          console.log("Uploaded", snapshot.totalBytes, "bytes.");
-          console.log("File metadata:", snapshot.metadata);
-          this.getProfileImage();
-        })
-        .catch((error) => {
-          console.error("Upload failed", error);
-        });
+    async updateUserPic(ref, name) {
+      await updateDoc(ref, {
+        pictureName: name,
+      });
     },
-    async getProfileImage() {
-      var currentUser = getAuth().currentUser;
+    async getProfileImage(name) {
       const storage = getStorage();
-      getDownloadURL(ref(storage, "images/" + currentUser.uid))
+      getDownloadURL(ref(storage, "Avatars/" + name))
         .then((url) => {
           // This can be downloaded directly:
           const xhr = new XMLHttpRequest();
@@ -213,27 +197,21 @@ export default {
 };
 </script>
 
-<style>
-.page-image {
-  max-width: 360px;
-  max-height: 162px;
-  margin-bottom: 49px;
-}
-
-.flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  align-content: flex-start;
-  overflow: auto;
-  flex-direction: row;
-}
-
+<style scoped>
 .container-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  align-items: center;
+  position: absolute;
+  top: 200px;
+  background-color: #1e232c7a;
+  margin: 0 20px;
+}
+
+.avatar-close-img {
+  width: 40px;
+  height: 40px;
 }
 
 .card {
@@ -246,10 +224,6 @@ export default {
   flex-direction: column;
   padding: 10px;
   margin: 10px;
-}
-
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .profile-img {
@@ -304,8 +278,6 @@ export default {
   height: 30px;
   margin: 4px;
 }
-
-/**/
 
 .input {
   position: relative;
