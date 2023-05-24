@@ -11,7 +11,7 @@
 
         <nav class="menu1">
           <a class="link1" @click="goProfile">Profile</a>
-          <a class="link1" @click="goSettings">Settings</a>
+          <a class="link1" @click="goAbout">About Us</a>
           <a class="link1" style="color: #f15b40" @click="openPopUp">Logout</a>
         </nav>
       </nav>
@@ -46,8 +46,8 @@ export default {
       router.push("/profile");
       document.getElementById("toggle1").checked = false;
     },
-    goSettings() {
-      router.push("/settings");
+    goAbout() {
+      router.push("/aboutUs");
       document.getElementById("toggle1").checked = false;
     },
     logout() {

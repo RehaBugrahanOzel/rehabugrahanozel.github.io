@@ -112,7 +112,10 @@ export default {
     },
 
     goBack() {
-      router.push("/");
+      if (localStorage.getItem("isFromProfile") === "true") {
+        localStorage.setItem("isFromProfile", "false");
+        router.push("/profile");
+      } else router.push("/");
     },
     beforeEnterTop(el) {
       el.style.transform = "translateY(-1000%)";

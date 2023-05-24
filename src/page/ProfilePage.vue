@@ -127,7 +127,8 @@ export default {
     },
 
     changePassword() {
-      router.push("/verification");
+      localStorage.setItem("isFromProfile", "true");
+      router.push("/forgotPassword");
     },
     enableEditing: function () {
       this.tempValue = this.userName;

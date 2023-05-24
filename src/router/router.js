@@ -30,9 +30,9 @@ const routers = [
     },
   },
   {
-    path: "/settings",
-    component: () => import("../page/SettingPage.vue"),
-    name: "settings-page",
+    path: "/aboutUs",
+    component: () => import("../page/AboutUsPage.vue"),
+    name: "about-us-page",
     meta: {
       requiresAuth: true,
     },
@@ -52,6 +52,12 @@ const routers = [
     path: "/passwordChanged",
     component: () => import("@/page/PasswordChangedPage.vue"),
     name: "password-changed-page",
+  },
+
+  {
+    path: "/results",
+    component: () => import("@/page/ResultPage.vue"),
+    name: "result-page",
   },
 ];
 
