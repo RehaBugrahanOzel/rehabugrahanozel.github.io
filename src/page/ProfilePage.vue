@@ -11,7 +11,7 @@
         <BurgerMenu></BurgerMenu>
       </div>
       <div class="page">
-        <h1>Profile Page</h1>
+        <h1>Profile</h1>
       </div>
 
       <div class="area">
@@ -78,9 +78,6 @@ import AvatarList from "../components/AvatarList.vue";
 import "../assets/css/style.css";
 import router from "@/router/router";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { getAuth } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
 
 export default {
   name: "ProfilePage",
@@ -136,6 +133,9 @@ export default {
       this.editing = false;
     },
     saveEdit: function () {
+      this.$store.dispatch("setUserName", {
+        name: this.tempValue,
+      });
       this.value = this.tempValue;
       this.disableEditing();
     },
@@ -144,18 +144,18 @@ export default {
       this.isAvatarListOpen = true;
     },
     avatarSelected(name) {
+      console.log("avatar selected: ", name);
       this.getProfileImage(name);
-      const userId = getAuth().currentUser.uid;
-      const ref = doc(db, "profiles", userId);
-      this.updateUserPic(ref, name);
+      this.updateUserPic(name);
       this.isAvatarListOpen = false;
     },
-    async updateUserPic(ref, name) {
-      await updateDoc(ref, {
+    updateUserPic(name) {
+      this.$store.dispatch("setProfileImg", {
         pictureName: name,
       });
     },
     async getProfileImage(name) {
+      console.log("get profile image: ", name);
       const storage = getStorage();
       getDownloadURL(ref(storage, "Avatars/" + name))
         .then((url) => {

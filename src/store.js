@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import {
   getStorage,
   ref,
@@ -54,9 +54,6 @@ const store = createStore({
         password
       );
       if (response) {
-        console.log(this.user);
-        console.log(response.user.uid);
-        console.log(name);
         await setDoc(doc(db, "profiles", response.user.uid), {
           name: name,
           email: email,
@@ -64,6 +61,7 @@ const store = createStore({
         });
         context.commit("SET_USER", response.user);
         context.commit("SET_USER_EMAIL", email);
+        context.commit("SET_USER_PICTURE", "avatar-4.svg");
       } else {
         throw new Error("Unable to register user");
       }
@@ -101,31 +99,33 @@ const store = createStore({
     },
     async getUserName(context) {
       var currentUser = getAuth().currentUser;
-      console.log("current user", currentUser);
       var data = (await getDoc(doc(db, "profiles", currentUser.uid))).data();
-      console.log("data", data);
       context.commit("SET_USER_NAME", data.name);
     },
     async getUserEmail(context) {
       var currentUser = getAuth().currentUser;
-      console.log("current user", currentUser);
       var data = (await getDoc(doc(db, "profiles", currentUser.uid))).data();
-      console.log("data", data);
       context.commit("SET_USER_EMAIL", data.email);
     },
     async getUserPicture(context) {
       var currentUser = getAuth().currentUser;
-      console.log("current user", currentUser);
       var data = (await getDoc(doc(db, "profiles", currentUser.uid))).data();
-      console.log("data", data);
       context.commit("SET_USER_PICTURE", data.pictureName);
     },
-    async setUserName(context, { userName }) {
+    async setUserName(context, { name }) {
       var currentUser = getAuth().currentUser;
-      await setDoc(doc(db, "profiles", currentUser.uid), {
-        name: userName,
+      await updateDoc(doc(db, "profiles", currentUser.uid), {
+        name: name,
       });
       context.commit("SET_USER_NAME", name);
+    },
+    async setProfileImg(context, { pictureName }) {
+      const userId = getAuth().currentUser.uid;
+      const ref = doc(db, "profiles", userId);
+      await updateDoc(ref, {
+        pictureName: pictureName,
+      });
+      context.commit("SET_USER_PICTURE", pictureName);
     },
     async uploadUserPicture(file) {
       var storage = getStorage();
