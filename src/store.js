@@ -4,6 +4,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import {
@@ -78,6 +80,29 @@ const store = createStore({
       } else {
         throw new Error("login failed");
       }
+    },
+
+    async googleLogIn(context) {
+      const provider = new GoogleAuthProvider();
+
+      const auth = getAuth();
+      await signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          //const credential = GoogleAuthProvider.credentialFromResult(result);
+          //const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          context.commit("SET_USER", user);
+          // IdP data available using getAdditionalUserInfo(result)
+          // ...
+
+          return true;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      return false;
     },
 
     async logOut(context) {

@@ -46,6 +46,7 @@
             class="element"
             text="Enter your email"
             inputType="text"
+            @inputVal="setEmail"
           />
         </div>
       </transition>
@@ -60,7 +61,7 @@
           text="Send Code"
           class="button"
           wrapper="dark"
-          @click="sendCode"
+          @click="sendEmail"
         />
       </transition>
       <div class="footer">
@@ -98,6 +99,8 @@ import CommonButton from "@/components/CommonButton.vue";
 import CommonInput from "@/components/CommonInput.vue";
 import router from "@/router/router";
 import { gsap } from "gsap";
+import { getAuth, sendPasswordResetEmail } from "@firebase/auth";
+
 export default {
   name: "ForgotPassword",
 
@@ -106,9 +109,29 @@ export default {
     CommonButton,
   },
 
+  data() {
+    return {
+      email: "",
+      error: null,
+    };
+  },
   methods: {
-    sendCode() {
-      router.push("/verification");
+    sendEmail() {
+      if (this.email === "") {
+        this.error = "Please type in a valid email address.";
+        return;
+      }
+
+      this.error = null;
+
+      sendPasswordResetEmail(getAuth(), this.email)
+        .then(() => {
+          localStorage.setItem("isEmailSent", "true");
+          router.push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     goBack() {
@@ -136,6 +159,9 @@ export default {
         ease: "power4.out",
         y: 0,
       });
+    },
+    setEmail(val) {
+      this.email = val;
     },
   },
 };
