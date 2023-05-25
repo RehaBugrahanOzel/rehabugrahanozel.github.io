@@ -32,11 +32,7 @@
           id="bottom-container"
         >
           <div class="container-wrapper">
-            <div
-              class="flex-container"
-              v-for="item in exercisesList"
-              :key="item"
-            >
+            <div class="flex-container" v-for="item in categories" :key="item">
               <CategoryButton
                 class="category-button"
                 :text="item.txt"
@@ -88,16 +84,12 @@ import ExerciseTab from "@/tabs/ExerciseTab.vue";
 import VideoExerciseTab from "@/tabs/VideoExerciseTab.vue";
 import ExerciseButton from "@/components/ExerciseButton.vue";
 import ExerciseOfTheDay from "../assets/img/exercise-of-the-day.svg";
-import Core from "../assets/img/body-parts/core.svg";
-import Arm from "../assets/img/body-parts/arm.svg";
-import Back from "../assets/img/body-parts/back.svg";
-import Chest from "../assets/img/body-parts/chest.svg";
-import FullBody from "../assets/img/body-parts/full-body.svg";
-import Leg from "../assets/img/body-parts/leg.svg";
 import "../assets/css/style.css";
 import { gsap } from "gsap";
 import { getAuth } from "firebase/auth";
-
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { collection, query, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 export default {
   name: "HomePage",
   components: {
@@ -111,20 +103,12 @@ export default {
     return {
       exerciseOfTheDayImg: ExerciseOfTheDay,
       exerciseOfTheDayTxt: "Exercise of the day",
-      exercisesList: [
-        { txt: "Core", img: Core },
-        { txt: "Arm", img: Arm },
-        { txt: "Back", img: Back },
-        { txt: "Chest", img: Chest },
-        { txt: "Full Body", img: FullBody },
-        { txt: "Leg", img: Leg },
-      ],
-
       isExerciseActive: false,
       isPageShown: false,
       selectedExercise: "",
       videoExerciseActive: false,
-      videoExerciseInfo: {},
+      videoExerciseInfo: "",
+      categories: [],
     };
   },
   created() {
@@ -135,6 +119,7 @@ export default {
     getAuth().onAuthStateChanged((user) => {
       this.$store.dispatch("fetchUser", user);
     });
+    this.getCategories();
   },
 
   async mounted() {
@@ -233,11 +218,44 @@ export default {
         y: 0,
       });
     },
+    async getCategories() {
+      const q = query(collection(db, "categories"));
+      const querySnapshot = await getDocs(q);
+      const storage = getStorage();
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log("Categories: ", doc.id);
+        getDownloadURL(ref(storage, "categories/" + doc.id + ".svg"))
+          .then((url) => {
+            // This can be downloaded directly:
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = "blob";
+            // eslint-disable-next-line
+            xhr.onload = (event) => {
+              // eslint-disable-next-line
+              const blob = xhr.response;
+            };
+            xhr.open("GET", url);
+            xhr.send();
+
+            // Or inserted into an <img> element
+            //const img = document.getElementById("profile-img");
+            this.categories.push({
+              txt: doc.id,
+              img: url,
+            });
+            //img.setAttribute("src", url);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .page-image {
   max-width: 360px;
   max-height: 162px;

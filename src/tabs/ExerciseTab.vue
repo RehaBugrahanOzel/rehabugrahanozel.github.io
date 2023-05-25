@@ -17,7 +17,7 @@
           class="button"
           :text="item.txt"
           :src="item.img"
-          @click="enterExercise(item)"
+          @click="enterExercise(item.txt)"
         ></ExerciseButton>
       </div>
     </div>
@@ -25,10 +25,9 @@
 </template>
 
 <script>
-import Core from "../assets/img/body-parts/core.svg";
-import Arm from "../assets/img/body-parts/arm.svg";
-import Back from "../assets/img/body-parts/back.svg";
-import Chest from "../assets/img/body-parts/chest.svg";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { collection, query, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 import "../assets/css/style.css";
 
@@ -36,33 +35,66 @@ import ExerciseButton from "../components/ExerciseButton.vue";
 //import router from "@/router/router";
 export default {
   name: "ExerciseTab",
+
+  components: {
+    ExerciseButton,
+  },
+
   props: {
     isExerciseActive: String,
     categoryName: String,
   },
+  data() {
+    return {
+      exercisesList: [],
+    };
+  },
 
-  components: {
-    ExerciseButton,
+  mounted() {
+    this.getExercises(this.categoryName);
   },
 
   methods: {
     goBack() {
       this.$emit("exerciseClosed", false);
     },
-    enterExercise(state, item) {
-      this.$emit("exerciseChoosed", state, item);
-      //router.push("/exercise");
+    enterExercise(item) {
+      console.log(item);
+      this.$emit("exerciseChoosed", true, item);
     },
-  },
-  data() {
-    return {
-      exercisesList: [
-        { txt: "Leg Extension", img: Core },
-        { txt: "Plank Leg Swing", img: Arm },
-        { txt: "Side Leg Lift", img: Back },
-        { txt: "Single Leg Bridge", img: Chest },
-      ],
-    };
+    async getExercises(category) {
+      const q = query(collection(db, "categories/" + category + "/exercises"));
+      const querySnapshot = await getDocs(q);
+      const storage = getStorage();
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log("Exercises: ", doc.id);
+        getDownloadURL(ref(storage, "exercises/" + doc.id + ".svg"))
+          .then((url) => {
+            // This can be downloaded directly:
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = "blob";
+            // eslint-disable-next-line
+            xhr.onload = (event) => {
+              // eslint-disable-next-line
+              const blob = xhr.response;
+            };
+            xhr.open("GET", url);
+            xhr.send();
+
+            // Or inserted into an <img> element
+            //const img = document.getElementById("profile-img");
+            this.exercisesList.push({
+              txt: doc.id,
+              img: url,
+            });
+            //img.setAttribute("src", url);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    },
   },
 };
 </script>
@@ -95,10 +127,10 @@ export default {
 }
 
 .button {
-  width: 90%;
+  width: 100%;
   max-width: 660px;
   height: 150px;
-  margin-top: 7%;
+  margin-top: 10px;
   font-size: 24px;
 }
 
@@ -108,6 +140,8 @@ export default {
   justify-content: center;
   align-items: flex-start;
   align-content: flex-start;
+  overflow: auto;
+  flex-direction: row;
   /* width: 90%;
   height: 80vh; */
   /* overflow: auto;
@@ -116,5 +150,7 @@ export default {
 
 .container-wrapper {
   display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 </style>

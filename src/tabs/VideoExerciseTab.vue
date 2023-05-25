@@ -13,10 +13,10 @@
         class="logo-mini"
       />
     </div>
-    <div class="text">Leg Extention</div>
+    <div class="text">{{ videoExerciseInfo }}</div>
     <video-player
       class="video-player"
-      :src="videoEx"
+      :src="videoSource"
       controls
       :loop="true"
       :volume="0.6"
@@ -32,19 +32,27 @@
 </template>
 
 <script>
-import VideoEx from "../assets/videos/Rick Astley - Never Gonna Give You Up (Official Music Video).mp4";
 import CommonButton from "../components/CommonButton.vue";
 import { VideoPlayer } from "@videojs-player/vue";
 import "video.js/dist/video-js.css";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 export default {
   name: "VideoExerciseTab",
   props: {
-    videoExerciseInfo: Object,
+    videoExerciseInfo: String,
     videoExerciseActive: Boolean,
   },
   components: {
     CommonButton,
     VideoPlayer,
+  },
+  data() {
+    return {
+      videoSource: "",
+    };
+  },
+  mounted() {
+    this.getExerciseVideo(this.videoExerciseInfo);
   },
   methods: {
     goBack() {
@@ -53,11 +61,31 @@ export default {
     start() {
       androidApp.startCamera("Openning...");
     },
-  },
-  data() {
-    return {
-      videoEx: VideoEx,
-    };
+    async getExerciseVideo(name) {
+      console.log("get exercise video image: ", name);
+      const storage = getStorage();
+      getDownloadURL(ref(storage, "exerciseVideos/" + name + ".mp4"))
+        .then((url) => {
+          // This can be downloaded directly:
+          const xhr = new XMLHttpRequest();
+          xhr.responseType = "blob";
+          // eslint-disable-next-line
+          xhr.onload = (event) => {
+            // eslint-disable-next-line
+            const blob = xhr.response;
+          };
+          xhr.open("GET", url);
+          xhr.send();
+
+          // Or inserted into an <img> element
+          //const img = document.getElementById("profile-img");
+          this.videoSource = url;
+          //img.setAttribute("src", url);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
