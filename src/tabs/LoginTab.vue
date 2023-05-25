@@ -35,7 +35,11 @@
     <div class="login-options-txt">Or Login with</div>
     <div class="login-options">
       <CommonIconButton :src="facebookIconSrc" class="element" />
-      <CommonIconButton :src="googleIconSrc" class="element" />
+      <CommonIconButton
+        :src="googleIconSrc"
+        class="element"
+        @click="googleLogin"
+      />
       <CommonIconButton :src="appleIconSrc" class="element" />
     </div>
     <div class="register-now">
@@ -101,6 +105,22 @@ export default {
         }
         this.toastActive = true;
         console.log("Caught error", err.message);
+      }
+    },
+
+    async googleLogin() {
+      let flag = false;
+      console.log("Google login pressed");
+      try {
+        flag = await this.$store.dispatch("googleLogIn");
+      } catch (err) {
+        this.message = "Something went wrong";
+
+        this.toastActive = true;
+        console.log("Caught error", err.message);
+      }
+      if (flag) {
+        this.$emit("loggedIn");
       }
     },
     setEmail(val) {

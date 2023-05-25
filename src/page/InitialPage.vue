@@ -75,6 +75,14 @@
         @registeredIn="registeredIn"
       />
     </transition>
+
+    <ToastComponent
+      class="toast"
+      :contentText="message"
+      :confirmText="'Close'"
+      @confirm="closeToast"
+      v-if="toastActive"
+    ></ToastComponent>
   </div>
 </template>
 
@@ -93,20 +101,27 @@ import RegisterTab from "../tabs/RegisterTab.vue";
 import "../assets/css/style.css";
 import { gsap } from "gsap";
 import router from "@/router/router";
+import ToastComponent from "@/components/ToastComponent.vue";
 export default {
   name: "InitialPage",
   components: {
     CommonButton,
     LoginTab,
     RegisterTab,
+    ToastComponent,
   },
   data() {
     return {
       isLoginActive: false,
       isRegisterActive: false,
+      message: "Password Reset Email Sent! Please check your email.",
+      toastActive: false,
     };
   },
   methods: {
+    closeToast() {
+      this.toastActive = false;
+    },
     login() {
       this.isLoginActive = true;
     },
@@ -198,10 +213,24 @@ export default {
       window.history.pushState(null, "", window.location.href);
     };
   },
+
+  mounted() {
+    if (localStorage.getItem("isEmailSent") === "true") {
+      console.log("toast gosterilecek");
+      this.toastActive = true;
+      localStorage.setItem("isEmailSent", "false");
+    }
+  },
 };
 </script>
 
 <style scoped>
+.toast {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+}
 .login-tab {
   background-color: #ffffff;
   position: absolute;
