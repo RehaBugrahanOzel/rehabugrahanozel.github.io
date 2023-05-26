@@ -1,6 +1,6 @@
 <template class="category-button">
   <div>
-    <div>{{ text }}</div>
+    <div style="text-transform: capitalize">{{ text }}</div>
     <img :src="src" class="img" />
   </div>
 </template>

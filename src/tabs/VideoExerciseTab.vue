@@ -135,6 +135,7 @@ export default {
   line-height: 100%;
   font-family: "Arial";
   margin: 35px 42px;
+  text-transform: capitalize;
 }
 
 .button {

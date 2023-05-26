@@ -34,5 +34,6 @@ export default {
 }
 .element {
   margin: 20px;
+  text-transform: capitalize;
 }
 </style>
