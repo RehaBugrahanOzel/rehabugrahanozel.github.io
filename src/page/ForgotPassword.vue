@@ -135,7 +135,10 @@ export default {
     },
 
     goBack() {
-      if (localStorage.getItem("isFromProfile") === "true") {
+      if (
+        localStorage.getItem("isFromProfile") !== null &&
+        localStorage.getItem("isFromProfile") === "true"
+      ) {
         localStorage.setItem("isFromProfile", "false");
         router.push("/profile");
       } else router.push("/");

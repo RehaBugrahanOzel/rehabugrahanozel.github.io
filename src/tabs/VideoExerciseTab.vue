@@ -53,8 +53,12 @@ export default {
   },
   mounted() {
     this.getExerciseVideo(this.videoExerciseInfo);
+    document.addEventListener("exerciseEnd", this.exerciseEnd);
   },
   methods: {
+    exerciseEnd() {
+      console.log("exercise ended from android side!!!");
+    },
     goBack() {
       this.$emit("videoExerciseClosed", false);
     },
@@ -62,7 +66,6 @@ export default {
       androidApp.startCamera("Openning...");
     },
     async getExerciseVideo(name) {
-      console.log("get exercise video image: ", name);
       const storage = getStorage();
       getDownloadURL(ref(storage, "exerciseVideos/" + name + ".mp4"))
         .then((url) => {

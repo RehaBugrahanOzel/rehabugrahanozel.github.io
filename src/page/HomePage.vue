@@ -121,8 +121,7 @@ export default {
     });
     this.getCategories();
   },
-
-  async mounted() {
+  async beforeMount() {
     await this.$store.dispatch("getUserPicture");
   },
 
