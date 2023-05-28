@@ -215,7 +215,10 @@ export default {
   },
 
   mounted() {
-    if (localStorage.getItem("isEmailSent") === "true") {
+    if (
+      localStorage.getItem("isEmailSent") !== null &&
+      localStorage.getItem("isEmailSent") === "true"
+    ) {
       console.log("toast gosterilecek");
       this.toastActive = true;
       localStorage.setItem("isEmailSent", "false");

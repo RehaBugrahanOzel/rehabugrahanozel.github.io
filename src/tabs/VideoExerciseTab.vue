@@ -65,7 +65,8 @@ export default {
       this.$emit("videoExerciseClosed", false);
     },
     start() {
-      androidApp.startCamera("Openning...");
+      console.log("exercise name is: ", this.videoExerciseInfo);
+      androidApp.startCamera(this.videoExerciseInfo);
     },
     async getExerciseVideo(name) {
       const storage = getStorage();

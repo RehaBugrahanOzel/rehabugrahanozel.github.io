@@ -33,6 +33,7 @@ import BurgerMenu from "@/components/BurgerMenu.vue";
 import "../assets/css/style.css";
 import router from "@/router/router";
 import CommonButton from "@/components/CommonButton.vue";
+import axios from "axios";
 
 export default {
   name: "ResultPage",
@@ -46,7 +47,7 @@ export default {
     };
   },
   created() {
-    axios.get("http://127.0.0.1:5000/result").then((response) => {
+    axios.get("http://192.168.1.12:5000/result").then((response) => {
       const json = JSON.parse(response.data);
       const jsonResult = json.Result;
       this.result = jsonResult;
