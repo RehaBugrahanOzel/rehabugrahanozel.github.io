@@ -69,7 +69,7 @@ export default {
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         console.log("Exercises: ", doc.id);
-        getDownloadURL(ref(storage, "exercises/" + doc.id + ".svg"))
+        getDownloadURL(ref(storage, "exercises/" + doc.id + ".png"))
           .then((url) => {
             // This can be downloaded directly:
             const xhr = new XMLHttpRequest();

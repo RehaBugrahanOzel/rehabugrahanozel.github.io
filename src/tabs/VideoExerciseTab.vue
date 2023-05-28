@@ -36,6 +36,7 @@ import CommonButton from "../components/CommonButton.vue";
 import { VideoPlayer } from "@videojs-player/vue";
 import "video.js/dist/video-js.css";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import router from "@/router/router";
 export default {
   name: "VideoExerciseTab",
   props: {
@@ -58,6 +59,7 @@ export default {
   methods: {
     exerciseEnd() {
       console.log("exercise ended from android side!!!");
+      router.push("/results");
     },
     goBack() {
       this.$emit("videoExerciseClosed", false);

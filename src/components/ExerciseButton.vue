@@ -33,7 +33,7 @@ export default {
   transition: 0.3s;
 }
 .element {
-  height: 150px;
+  height: 140px;
   margin: 20px;
   text-transform: capitalize;
   display: flex;

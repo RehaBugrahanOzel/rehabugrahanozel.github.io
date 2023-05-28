@@ -1,12 +1,12 @@
 <template>
   <div class="initial">
     <div>
-      <img
+      <!-- <img
         src="../assets/img/back-button.svg"
         alt="back-button"
         class="back-button"
         @click="goBack"
-      />
+      /> -->
       <div class="burger-button">
         <!--<img src="../assets/img/hamburger-icon.svg" class="element" />-->
         <BurgerMenu></BurgerMenu>
@@ -15,20 +15,13 @@
       <div class="page">
         <h1>Results</h1>
 
-        <p class="text-box">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. A, id harum
-          dolores minima beatae excepturi laboriosam maiores placeat perferendis
-          dolorem fuga dolore deleniti architecto saepe corporis non tenetur
-          culpa error numquam itaque quidem cupiditate. Velit ex nesciunt,
-          necessitatibus odio neque minima enim qui unde quasi excepturi. Quia
-          obcaecati corrupti exercitationem?
-        </p>
+        <p class="text-box">{{ result }}</p>
 
         <CommonButton
           text="Menu"
           class="button"
           wrapper="dark"
-          @click="changePassword"
+          @click="goBack"
         />
       </div>
     </div>
@@ -48,9 +41,20 @@ export default {
     CommonButton,
   },
   data() {
-    return {};
+    return {
+      result: "",
+    };
   },
-
+  created() {
+    axios.get("http://127.0.0.1:5000/result").then((response) => {
+      const json = JSON.parse(response.data);
+      const jsonResult = json.Result;
+      this.result = jsonResult;
+      console.log("response", response);
+      console.log("response parsed", json);
+      console.log("(response parsed).Result", jsonResult);
+    });
+  },
   methods: {
     goBack() {
       router.push("/home");
@@ -71,5 +75,11 @@ export default {
   border-style: double;
   border-radius: 8px;
   box-shadow: #8391a1;
+}
+.button {
+  width: 80%;
+  max-width: 330px;
+  height: 56px;
+  margin-top: 7%;
 }
 </style>
