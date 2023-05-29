@@ -23,9 +23,7 @@
       :autoplay="true"
     />
     <div class="info">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis .
+      <p>{{ description }}</p>
     </div>
     <CommonButton text="Start" class="button" wrapper="dark" @click="start" />
   </div>
@@ -37,11 +35,14 @@ import { VideoPlayer } from "@videojs-player/vue";
 import "video.js/dist/video-js.css";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import router from "@/router/router";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 export default {
   name: "VideoExerciseTab",
   props: {
     videoExerciseInfo: String,
     videoExerciseActive: Boolean,
+    selectedExercise: String,
   },
   components: {
     CommonButton,
@@ -50,11 +51,13 @@ export default {
   data() {
     return {
       videoSource: "",
+      description: "",
     };
   },
   mounted() {
     this.getExerciseVideo(this.videoExerciseInfo);
     document.addEventListener("exerciseEnd", this.exerciseEnd);
+    this.getDescription();
   },
   methods: {
     exerciseEnd() {
@@ -67,6 +70,21 @@ export default {
     start() {
       console.log("exercise name is: ", this.videoExerciseInfo);
       androidApp.startCamera(this.videoExerciseInfo);
+    },
+    async getDescription() {
+      const exerciseDoc = await getDoc(
+        doc(
+          db,
+          "categories/" + this.selectedExercise + "/exercises",
+          this.videoExerciseInfo
+        )
+      );
+      console.log("collection is: ", exerciseDoc);
+      let data = exerciseDoc.data().description;
+      data = data.replaceAll("+", "\n");
+      data = data.replaceAll(";", "\n◉\t");
+      console.log("data is: ", data);
+      this.description = data;
     },
     async getExerciseVideo(name) {
       const storage = getStorage();
@@ -97,17 +115,21 @@ export default {
 </script>
 
 <style scoped>
+.page {
+  overflow: scroll;
+}
 .info {
   width: 80%;
   max-width: 330px;
-  height: 200px;
   margin-top: 7%;
-  font-size: 15px;
+  font-size: 18px;
   font-family: "Arial";
   border: hidden;
   border-radius: 8px;
   background-color: #cdcdcd;
-  padding: 27px;
+  padding: 5px 27px;
+  overflow: scroll;
+  white-space: pre-wrap;
 }
 .video-player {
   width: 90%;

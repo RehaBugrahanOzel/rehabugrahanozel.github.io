@@ -72,6 +72,7 @@
         :videoExerciseInfo="videoExerciseInfo"
         :videoExerciseActive="videoExerciseActive"
         @videoExerciseClosed="videoExerciseClosed"
+        :selectedExercise="selectedExercise"
       ></VideoExerciseTab>
     </transition>
   </div>

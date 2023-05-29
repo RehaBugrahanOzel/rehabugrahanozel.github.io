@@ -97,7 +97,7 @@
                   ><img class="logo" src="../assets/img/linkedin.svg"
                 /></a>
 
-                <a href=""
+                <a href="https://github.com/Berkbarut"
                   ><img class="logo" src="../assets/img/github.svg"
                 /></a>
               </div>
