@@ -215,14 +215,14 @@ export default {
   },
 
   mounted() {
-    if (
-      localStorage.getItem("isEmailSent") !== null &&
-      localStorage.getItem("isEmailSent") === "true"
-    ) {
-      console.log("toast gosterilecek");
-      this.toastActive = true;
-      localStorage.setItem("isEmailSent", "false");
-    }
+    // if (
+    //   localStorage.getItem("isEmailSent") !== null &&
+    //   localStorage.getItem("isEmailSent") === "true"
+    // ) {
+    //   console.log("toast gosterilecek");
+    //   this.toastActive = true;
+    //   localStorage.setItem("isEmailSent", "false");
+    // }
   },
 };
 </script>

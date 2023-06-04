@@ -126,7 +126,7 @@ export default {
 
       sendPasswordResetEmail(getAuth(), this.email)
         .then(() => {
-          localStorage.setItem("isEmailSent", "true");
+          //localStorage.setItem("isEmailSent", "true");
           router.push("/");
         })
         .catch((error) => {
@@ -135,13 +135,13 @@ export default {
     },
 
     goBack() {
-      if (
-        localStorage.getItem("isFromProfile") !== null &&
-        localStorage.getItem("isFromProfile") === "true"
-      ) {
-        localStorage.setItem("isFromProfile", "false");
-        router.push("/profile");
-      } else router.push("/");
+      // if (
+      //   localStorage.getItem("isFromProfile") !== null &&
+      //   localStorage.getItem("isFromProfile") === "true"
+      // ) {
+      //   localStorage.setItem("isFromProfile", "false");
+      //   router.push("/profile");
+      // } else router.push("/");
     },
     beforeEnterTop(el) {
       el.style.transform = "translateY(-1000%)";
