@@ -121,7 +121,7 @@ export default {
     },
 
     changePassword() {
-      localStorage.setItem("isFromProfile", "true");
+      //localStorage.setItem("isFromProfile", "true");
       router.push("/forgotPassword");
     },
     enableEditing: function () {

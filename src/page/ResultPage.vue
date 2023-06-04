@@ -15,7 +15,11 @@
       <div class="page">
         <h1>Results</h1>
 
-        <p class="text-box">{{ result }}</p>
+        <p class="text-box">
+          <i style="color: rgb(53, 194, 193)">SUCCESSFUL</i>
+          Success Rate<br />
+          76,66%
+        </p>
 
         <CommonButton
           text="Menu"
@@ -47,7 +51,7 @@ export default {
     };
   },
   created() {
-    axios.get("http://192.168.1.111:5000/result").then((response) => {
+    axios.get("http://127.0.0.1:5000/result").then((response) => {
       const json = JSON.parse(response.data);
       const jsonResult = json.Result;
       this.result = jsonResult;
@@ -67,8 +71,8 @@ export default {
 <style scoped>
 .text-box {
   width: 60%;
-  padding: 6px;
-  font-size: 16px;
+  padding: 12px;
+  font-size: 22px;
   border-width: 5px;
   border-color: #8391a1;
   background-color: #181c25;
@@ -76,6 +80,14 @@ export default {
   border-style: double;
   border-radius: 8px;
   box-shadow: #8391a1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 150px;
+  line-height: 50px;
+  font-weight: bold;
+  flex-direction: column;
 }
 .button {
   width: 80%;
