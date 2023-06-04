@@ -51,7 +51,7 @@ export default {
     };
   },
   created() {
-    axios.get("http://127.0.0.1:5000/result").then((response) => {
+    axios.get("http://192.168.1.12:5000/result").then((response) => {
       const json = JSON.parse(response.data);
       const jsonResult = json.Result;
       this.result = jsonResult;
