@@ -69,8 +69,7 @@ export default {
     },
     start() {
       console.log("exercise name is: ", this.videoExerciseInfo);
-      this.exerciseEnd();
-      // androidApp.startCamera(this.videoExerciseInfo);
+      androidApp.startCamera(this.videoExerciseInfo);
     },
     async getDescription() {
       const exerciseDoc = await getDoc(
