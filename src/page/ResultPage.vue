@@ -16,9 +16,9 @@
         <h1>Results</h1>
 
         <p class="text-box">
-          <!-- <i style="color: rgb(53, 194, 193)">SUCCESSFUL</i> -->
+          <i style="color: rgb(53, 194, 193)">SUCCESSFUL</i>
           Success Rate<br />
-          {{ result }}
+          64%
         </p>
 
         <CommonButton
