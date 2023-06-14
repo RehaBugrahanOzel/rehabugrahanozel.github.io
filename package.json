@@ -55,5 +55,9 @@
     "not dead",
     "not ie 11"
   ],
-  "homepage": "/rehabugrahanozel.github.io/"
+  "homepage": "/rehabugrahanozel.github.io/",
+  "browser": {
+    "http": false,
+    "https": false
+  }
 }
