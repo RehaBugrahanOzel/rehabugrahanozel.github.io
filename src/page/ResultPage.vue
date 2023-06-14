@@ -50,8 +50,8 @@ export default {
       result: "",
     };
   },
-  created() {
-    axios.get("http://172.20.10.4/result").then((response) => {
+  async created() {
+    await axios.get("http://172.20.10.4/result").then((response) => {
       const json = JSON.parse(response.data);
       const jsonResult = json.Result;
       this.result = jsonResult;
