@@ -56,7 +56,7 @@ export default {
       rejectUnauthorized: false,
     });
     await axios
-      .get("https://172.20.10.4/result", { httpsAgent })
+      .get("https://172.20.10.4:5000/result", { httpsAgent })
       .then((response) => {
         const json = JSON.parse(response.data);
         const jsonResult = json.Result;
