@@ -38,7 +38,6 @@ import "../assets/css/style.css";
 import router from "@/router/router";
 import CommonButton from "@/components/CommonButton.vue";
 import axios from "axios";
-import https from "https";
 
 export default {
   name: "ResultPage",
@@ -52,10 +51,6 @@ export default {
     };
   },
   async created() {
-    const httpsAgent = new https.Agent({
-      rejectUnauthorized: false,
-    });
-    axios.defaults.httpsAgent = httpsAgent;
     await axios.get("https://172.20.10.4:5000/result").then((response) => {
       const json = JSON.parse(response.data);
       const jsonResult = json.Result;
